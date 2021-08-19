@@ -22,18 +22,30 @@ public class Bank {
         this.interest = interest;
     }
 
+    /**
+     * @return the id of this bank
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     * @return the name of this bank
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @return the {@link Limits} of this bank
+     */
     public Limits getLimits() {
         return limits;
     }
 
+    /**
+     * @return the {@link Interest} of this bank
+     */
     public Interest getInterest() {
         return interest;
     }
