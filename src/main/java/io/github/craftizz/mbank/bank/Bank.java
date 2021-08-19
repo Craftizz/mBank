@@ -9,17 +9,20 @@ public class Bank {
 
     private final Limits limits;
     private final Interest interest;
+    private final Commands commands;
 
 
     public Bank(final @NotNull Integer id,
                 final @NotNull String name,
                 final @NotNull Limits limits,
-                final @NotNull Interest interest) {
+                final @NotNull Interest interest,
+                final @NotNull Commands commands) {
 
         this.id = id;
         this.name = name;
         this.limits = limits;
         this.interest = interest;
+        this.commands = commands;
     }
 
     /**
@@ -48,5 +51,12 @@ public class Bank {
      */
     public Interest getInterest() {
         return interest;
+    }
+
+    /**
+     * @return the {@link Commands} of this bank
+     */
+    public Commands getCommands() {
+        return commands;
     }
 }

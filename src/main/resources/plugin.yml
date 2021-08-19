@@ -2,5 +2,8 @@ name: mBank
 version: ${project.version}
 main: io.github.craftizz.mbank.MBank
 api-version: 1.17
-authors: [ Craftizz ]
+
+authors: [ Craftizz, b01w ]
+depend: [Vault]
+
 description: Banking System of MinEconomy 
