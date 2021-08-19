@@ -8,7 +8,8 @@ public class UserBankData {
 
     private final Integer bankId;
     private final Double balance;
-    private final LocalDateTime lastWithdraw;
+
+    private LocalDateTime lastWithdraw;
 
     public UserBankData(final @NotNull Integer bankId,
                         final @NotNull Double balance,
@@ -39,4 +40,10 @@ public class UserBankData {
         return lastWithdraw;
     }
 
+    /**
+     * Sets the last withdraw to {@param lastWithdraw}
+     */
+    public void setLastWithdraw(LocalDateTime lastWithdraw) {
+        this.lastWithdraw = lastWithdraw;
+    }
 }

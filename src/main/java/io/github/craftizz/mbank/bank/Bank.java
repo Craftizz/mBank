@@ -7,17 +7,34 @@ public class Bank {
     private final Integer id;
     private final String name;
 
-    private final Double minimumBalance;
-    private final Double maximumBalance;
+    private final Limits limits;
+    private final Interest interest;
+
 
     public Bank(final @NotNull Integer id,
                 final @NotNull String name,
-                final @NotNull Double minimumBalance,
-                final @NotNull Double maximumBalance) {
+                final @NotNull Limits limits,
+                final @NotNull Interest interest) {
 
         this.id = id;
         this.name = name;
-        this.minimumBalance = minimumBalance;
-        this.maximumBalance = maximumBalance;
+        this.limits = limits;
+        this.interest = interest;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Limits getLimits() {
+        return limits;
+    }
+
+    public Interest getInterest() {
+        return interest;
     }
 }
