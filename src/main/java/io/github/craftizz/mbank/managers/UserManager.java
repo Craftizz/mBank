@@ -107,6 +107,7 @@ public class UserManager {
      * Starts saving all users. Used on {@link MBank#onEnable()}
      */
     public void startSaving() {
+        plugin.getLogger().warning("Saving Users Bank Data...");
         Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, this::saveAllUsers, 600, 600);
     }
 

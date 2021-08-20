@@ -9,7 +9,6 @@ import io.github.craftizz.mbank.hooks.VaultHook;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.text.html.Option;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Optional;

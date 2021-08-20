@@ -31,17 +31,21 @@ public class TaskRunnable implements Runnable {
 
     @Override
     public void run() {
-
         final long stopTime = System.currentTimeMillis() + MAX_MS_PER_SECOND;
 
+        // Prevent Infinite Loops
+        final Task firstTask = taskDeque.poll();
+        if (firstTask == null) {
+            return;
+        }
+        computeTask(firstTask);
+
         while (!taskDeque.isEmpty() && System.currentTimeMillis() <= stopTime) {
-
             final Task task = taskDeque.poll();
-
-            if (task != null) {
-                computeTask(task);
+            computeTask(task);
+            if (firstTask == task) {
+                break;
             }
-
         }
     }
 

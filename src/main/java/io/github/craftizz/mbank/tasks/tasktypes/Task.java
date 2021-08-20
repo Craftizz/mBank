@@ -8,5 +8,4 @@ public interface Task {
         return false;
     }
 
-    boolean reschedule();
 }

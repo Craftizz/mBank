@@ -6,6 +6,7 @@ import io.github.craftizz.mbank.database.DatabaseHandler;
 import io.github.craftizz.mbank.hooks.VaultHook;
 import io.github.craftizz.mbank.listeners.PlayerJoinListener;
 import io.github.craftizz.mbank.managers.BankManager;
+import io.github.craftizz.mbank.managers.TaskManager;
 import io.github.craftizz.mbank.managers.UserManager;
 import me.mattstudios.mf.base.CommandManager;
 import org.bukkit.plugin.PluginManager;
@@ -20,10 +21,12 @@ public final class MBank extends JavaPlugin {
 
     private UserManager userManager;
     private BankManager bankManager;
+    private TaskManager taskManager;
     private CommandManager commandManager;
 
     @Override
     public void onEnable() {
+
 
         // Initialize Database and Configuration
         this.databaseHandler = new DatabaseHandler();
@@ -38,6 +41,7 @@ public final class MBank extends JavaPlugin {
         // Initialize Managers
         this.userManager = new UserManager(this);
         this.bankManager = new BankManager(this);
+        this.taskManager = new TaskManager(this);
         this.commandManager = new CommandManager(this);
 
         // Initialize Listeners
@@ -53,17 +57,17 @@ public final class MBank extends JavaPlugin {
                 new BankWithdrawCommand(this)
         );
 
-        // Load Banks
+        // Setup Configuration
         configurationHandler.setupLanguage();
         configurationHandler.loadBanks();
 
-
         userManager.startSaving();
+        taskManager.startTask();
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        userManager.saveAllUsers();
     }
 
     public DatabaseHandler getDatabaseHandler() {

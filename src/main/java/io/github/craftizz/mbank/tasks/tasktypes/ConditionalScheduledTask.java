@@ -11,8 +11,9 @@ public abstract class ConditionalScheduledTask<T> implements Task, Predicate<T> 
     }
 
     @Override
-    public boolean reschedule() {
+    public boolean shouldReschedule() {
         return this.test(element);
     }
+
 
 }

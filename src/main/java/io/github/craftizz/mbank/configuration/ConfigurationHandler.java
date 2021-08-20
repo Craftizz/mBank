@@ -58,7 +58,7 @@ public class ConfigurationHandler {
 
             // Interest
             final Double interest = section.getDouble("interest" + ".value");
-            final Integer interval = section.getInt("interest" + ".interval");
+            final Integer interestInterval = section.getInt("interest" + ".interval");
 
             // Commands
             final List<String> joinCommands = section.getStringList("commands" + ".join-commands");
@@ -68,11 +68,19 @@ public class ConfigurationHandler {
             final Double depositFee = section.getDouble("fees" + ".deposit-fee");
             final Double withdrawFee = section.getDouble("fees" + ".withdraw-fee");
 
+            // Crisis
+            final Double chanceToHappen = section.getDouble("crisis" + ".chance-to-happen");
+            final Double chanceToLose = section.getDouble("crisis" + ".chance-to-lose");
+            final Double minimumLostInPercentage = section.getDouble("crisis" + ".minimum-lost");
+            final Double maximumLostInPercentage = section.getDouble("crisis" + ".maximum-lost");
+            final Integer crisisInterval = section.getInt("crisis" + ".interval");
+
             final Bank bank = new Bank(bankId, bankName,
                     new Restrictions(minimumBalance, maximumBalance, withdrawInterval, permissions),
-                    new Interest(interest, interval),
+                    new Interest(interest, interestInterval),
                     new Commands(joinCommands, leaveCommands),
-                    new Fees(depositFee, withdrawFee));
+                    new Fees(depositFee, withdrawFee),
+                    new Crisis(chanceToHappen, chanceToLose, minimumLostInPercentage, maximumLostInPercentage, crisisInterval));
 
             bankManager.addBank(bank);
 

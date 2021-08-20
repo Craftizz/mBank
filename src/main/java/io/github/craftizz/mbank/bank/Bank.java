@@ -11,14 +11,15 @@ public class Bank {
     private final Interest interest;
     private final Commands commands;
     private final Fees fees;
-
+    private final Crisis crisis;
 
     public Bank(final @NotNull String id,
                 final @NotNull String displayName,
                 final @NotNull Restrictions restrictions,
                 final @NotNull Interest interest,
                 final @NotNull Commands commands,
-                final @NotNull Fees fees) {
+                final @NotNull Fees fees,
+                final @NotNull Crisis crisis) {
 
         this.id = id;
         this.displayName = displayName;
@@ -26,6 +27,7 @@ public class Bank {
         this.interest = interest;
         this.commands = commands;
         this.fees = fees;
+        this.crisis = crisis;
     }
 
     /**
@@ -75,5 +77,12 @@ public class Bank {
      */
     public Fees getFees() {
         return fees;
+    }
+
+    /**
+     * @return the {@link Crisis} of this bank
+     */
+    public Crisis getCrisis() {
+        return crisis;
     }
 }

@@ -29,9 +29,12 @@ public class InterestTask extends TimedTask {
 
             //  Get Interest of the Bank
             final Interest interest = bank.getInterest();
+            Bukkit.getLogger().info("Giving Interest in " + interest.getNextPayout());
 
             // Check if should give interest
             if (!interest.shouldGiveInterest()) return;
+
+            Bukkit.getLogger().warning("Giving Interest...");
 
             // Reset Payout
             interest.calculateNextPayout();
