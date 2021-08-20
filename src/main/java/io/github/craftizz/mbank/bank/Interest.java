@@ -1,5 +1,6 @@
 package io.github.craftizz.mbank.bank;
 
+import io.github.craftizz.mbank.bank.user.UserBankData;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
@@ -9,7 +10,7 @@ public class Interest {
     private final Double interest;
     private final Integer payoutInterval;
 
-    private LocalDateTime nextPayout;
+    private Integer timeLeft;
 
     public Interest(final @NotNull Double interest,
                     final @NotNull Integer payoutInterval) {
@@ -18,11 +19,36 @@ public class Interest {
     }
 
     /**
-     * calculates the nextPayout time considering {@param lastPayout}
+     * @return if the bank should give Interest
      */
-    public void calculateNextPayoutInterval(final @NotNull LocalDateTime lastPayout) {
+    public boolean shouldGiveInterest() {
+        return timeLeft-- <= 0;
+    }
 
+    /**
+     * Calculates the next interest LocalDateTime
+     */
+    public void calculateNextPayout() {
+        this.timeLeft += payoutInterval;
+    }
 
+    /**
+     * Set the timeLeft
+     *
+     * @param timeLeft the new timeLeft
+     */
+    public void setTimeLeft(@NotNull Integer timeLeft) {
+        this.timeLeft = timeLeft;
+    }
+
+    /**
+     * Calculates interest according to the balance and interest
+     *
+     * @param balance the balance to be calculated
+     * @return the interest
+     */
+    public double calculateInterest(final @NotNull Double balance) {
+        return balance * this.interest;
     }
 
     /**
@@ -40,9 +66,16 @@ public class Interest {
     }
 
     /**
-     * @return the nextPayout interval of {@link Bank}
+     * @return the nextPayout interval of {@link Bank} in seconds
      */
-    public @NotNull LocalDateTime getNextPayout() {
-        return nextPayout;
+    public @NotNull Integer getNextPayout() {
+        return this.timeLeft;
+    }
+
+    /**
+     * @return the nextPayout interval of {@link Bank} in localDateTime
+     */
+    public @NotNull LocalDateTime getNextPayoutInLocalDateTime() {
+        return LocalDateTime.now().plusSeconds(timeLeft);
     }
 }

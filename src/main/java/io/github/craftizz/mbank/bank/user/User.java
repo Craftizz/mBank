@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class User {
@@ -26,11 +27,10 @@ public class User {
      * @param bankId is the BankId to be queried
      * @return an optional userBankData
      */
-    public UserBankData getUserBankData(final @NotNull String bankId) {
+    public Optional<UserBankData> getUserBankData(final @NotNull String bankId) {
         return bankData.stream()
                 .filter(bankData -> bankData.getBankId().equals(bankId))
-                .findFirst()
-                .orElseGet(() -> createBankData(bankId));
+                .findFirst();
     }
 
     /**

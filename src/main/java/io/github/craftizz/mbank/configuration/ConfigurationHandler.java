@@ -5,24 +5,42 @@ import de.leonhard.storage.Yaml;
 import de.leonhard.storage.sections.FlatFileSection;
 import io.github.craftizz.mbank.MBank;
 import io.github.craftizz.mbank.bank.*;
+import io.github.craftizz.mbank.managers.BankManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class ConfigurationHandler {
 
+    private final MBank plugin;
+
     private final Yaml bankConfig;
+    private final Yaml language;
 
     public ConfigurationHandler(final @NotNull MBank plugin) {
+
+        this.plugin = plugin;
 
         bankConfig = LightningBuilder
                 .fromPath("bank", plugin.getDataFolder().getAbsolutePath())
                 .addInputStreamFromResource("bank.yml")
                 .createYaml();
 
+        language = LightningBuilder
+                .fromPath("lang", plugin.getDataFolder().getAbsolutePath())
+                .addInputStreamFromResource("lang.yml")
+                .createYaml();
+    }
+
+    public void setupLanguage() {
+        for (Language languageEnum : Language.values()) {
+            languageEnum.setMessage(language.getString(languageEnum.getConfigPath()));
+        }
     }
 
     public void loadBanks() {
+
+        final BankManager bankManager = plugin.getBankManager();
 
         for (String bankKey : bankConfig.singleLayerKeySet()) {
 
@@ -56,6 +74,9 @@ public class ConfigurationHandler {
                     new Commands(joinCommands, leaveCommands),
                     new Fees(depositFee, withdrawFee));
 
+            bankManager.addBank(bank);
+
+            plugin.getLogger().warning("Loaded " + bank.getId() + " bank");
         }
 
     }

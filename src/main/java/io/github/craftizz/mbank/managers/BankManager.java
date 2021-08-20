@@ -3,12 +3,16 @@ package io.github.craftizz.mbank.managers;
 import io.github.craftizz.mbank.MBank;
 import io.github.craftizz.mbank.bank.Bank;
 import io.github.craftizz.mbank.bank.user.User;
+import io.github.craftizz.mbank.bank.user.UserBankData;
 import io.github.craftizz.mbank.database.DatabaseHandler;
 import io.github.craftizz.mbank.hooks.VaultHook;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
+import javax.swing.text.html.Option;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Optional;
 
 public class BankManager {
 
@@ -31,7 +35,10 @@ public class BankManager {
      */
     public Double getBalance(final @NotNull Bank bank,
                              final @NotNull OfflinePlayer offlinePlayer) {
-        return userManager.getUser(offlinePlayer).getUserBankData(bank.getId()).getBalance();
+        Optional<UserBankData> bankData = userManager
+                .getUser(offlinePlayer)
+                .getUserBankData(bank.getId());
+        return bankData.map(UserBankData::getBalance).orElse(0d);
     }
 
     /**
@@ -45,10 +52,14 @@ public class BankManager {
                         final @NotNull OfflinePlayer offlinePlayer,
                         final @NotNull Double amount) {
 
-        final User user = userManager.getUser(offlinePlayer);
-        user.getUserBankData(bank.getId()).deposit(amount);
+        final Optional<UserBankData> bankData = userManager
+                .getUser(offlinePlayer)
+                .getUserBankData(bank.getId());
 
-        VaultHook.getEconomy().withdrawPlayer(offlinePlayer, amount);
+        bankData.ifPresent(userBankData -> {
+            VaultHook.getEconomy().withdrawPlayer(offlinePlayer, amount);
+            userBankData.deposit(amount);
+        });
     }
 
     /**
@@ -62,10 +73,14 @@ public class BankManager {
                          final @NotNull OfflinePlayer offlinePlayer,
                          final @NotNull Double amount) {
 
-        final User user = userManager.getUser(offlinePlayer);
-        user.getUserBankData(bank.getId()).withdraw(amount);
+        final Optional<UserBankData> bankData = userManager
+                .getUser(offlinePlayer)
+                .getUserBankData(bank.getId());
 
-        VaultHook.getEconomy().depositPlayer(offlinePlayer, amount);
+        bankData.ifPresent(userBankData -> {
+            VaultHook.getEconomy().depositPlayer(offlinePlayer, amount);
+            userBankData.withdraw(amount);
+        });
     }
 
     /**
@@ -77,6 +92,7 @@ public class BankManager {
     public void createAccount(final @NotNull Bank bank,
                               final @NotNull OfflinePlayer offlinePlayer) {
         userManager.getUser(offlinePlayer).createBankData(bank.getId());
+        bank.getCommands().executeJoinCommands(offlinePlayer);
     }
 
     /**
@@ -89,6 +105,7 @@ public class BankManager {
                               final @NotNull OfflinePlayer offlinePlayer) {
         userManager.getUser(offlinePlayer).removeBankData(bank.getId());
         databaseHandler.deleteUserBankData(offlinePlayer.getUniqueId(), bank.getId());
+        bank.getCommands().executeLeaveCommands(offlinePlayer);
     }
 
     /**
@@ -100,7 +117,7 @@ public class BankManager {
      */
     public boolean hasAccount(final @NotNull Bank bank,
                               final @NotNull OfflinePlayer offlinePlayer) {
-        userManager.getUser(offlinePlayer).hasBankData(bank.getId());
+        return userManager.getUser(offlinePlayer).hasBankData(bank.getId());
     }
 
     /**
@@ -125,7 +142,11 @@ public class BankManager {
     /**
      * @return the map of banks
      */
-    public HashMap<String, Bank> getBanks() {
+    public HashMap<String, Bank> getBankMap() {
         return banks;
+    }
+
+    public Collection<Bank> getBanks() {
+        return banks.values();
     }
 }

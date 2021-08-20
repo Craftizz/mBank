@@ -2,12 +2,14 @@ package io.github.craftizz.mbank.managers;
 
 import io.github.craftizz.mbank.MBank;
 import io.github.craftizz.mbank.bank.user.User;
+import io.github.craftizz.mbank.database.DatabaseHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -86,7 +88,26 @@ public class UserManager {
      * Saves all of the loaded users to the database asynchronously
      */
     public void saveAllUsers() {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> plugin.getDatabaseHandler().saveUsers(users.values()));
+
+        final DatabaseHandler databaseHandler = plugin.getDatabaseHandler();
+        final Iterator<User> userIterator = users.values().iterator();
+
+        while (userIterator.hasNext()) {
+
+            final User user = userIterator.next();
+            databaseHandler.saveUser(user);
+
+            if (user.getPlayer() == null) {
+                userIterator.remove();
+            }
+        }
+    }
+
+    /**
+     * Starts saving all users. Used on {@link MBank#onEnable()}
+     */
+    public void startSaving() {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, this::saveAllUsers, 600, 600);
     }
 
 }

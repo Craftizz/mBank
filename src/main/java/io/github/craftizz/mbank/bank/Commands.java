@@ -1,6 +1,7 @@
 package io.github.craftizz.mbank.bank;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +23,7 @@ public class Commands {
     /**
      * Executes all the join commands with {@param player} as placeholder
      */
-    public void executeJoinCommands(final @NotNull Player player) {
+    public void executeJoinCommands(final @NotNull OfflinePlayer player) {
         final ConsoleCommandSender console = Bukkit.getConsoleSender();
         joinCommands.forEach(command -> Bukkit.getServer()
                 .dispatchCommand(console, command
@@ -32,7 +33,7 @@ public class Commands {
     /**
      * Executes all the leave commands with {@param player} as placeholder
      */
-    public void executeLeaveCommands(final @NotNull Player player) {
+    public void executeLeaveCommands(final @NotNull OfflinePlayer player) {
         final ConsoleCommandSender console = Bukkit.getConsoleSender();
         leaveCommands.forEach(command -> Bukkit.getServer()
                 .dispatchCommand(console, command
