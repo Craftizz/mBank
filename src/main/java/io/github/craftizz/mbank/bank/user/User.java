@@ -2,6 +2,7 @@ package io.github.craftizz.mbank.bank.user;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -11,10 +12,9 @@ public class User {
     private final UUID uniqueId;
     private final List<UserBankData> bankData;
 
-    public User(final @NotNull UUID uniqueId,
-                final @NotNull List<UserBankData> bankData) {
+    public User(final @NotNull UUID uniqueId) {
         this.uniqueId = uniqueId;
-        this.bankData = bankData;
+        this.bankData = new ArrayList<>();
     }
 
     /**
@@ -27,6 +27,15 @@ public class User {
         return bankData.stream()
                 .filter(bankData -> bankData.getBankId().equals(bankId))
                 .findFirst();
+    }
+
+    /**
+     * Adds a userBankData to the user's list
+     *
+     * @param userBankData the bankData to be added
+     */
+    public void addBankData(final @NotNull UserBankData userBankData) {
+        bankData.add(userBankData);
     }
 
     /**
