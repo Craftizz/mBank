@@ -13,6 +13,9 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class DatabaseHandler {
 
@@ -30,23 +33,37 @@ public class DatabaseHandler {
      * @param uniqueId is the uniqueId of the user to be loaded
      * @return the loaded {@link User}
      */
-    public User loadUserByUniqueId(final @NotNull UUID uniqueId) {
+    public User loadUserByUniqueIdUrgently(final @NotNull UUID uniqueId) {
 
         final User user = new User(uniqueId);
 
         final FlatFileSection section = getOrLoadUserFile(uniqueId)
                 .getSection(uniqueId.toString());
 
-        for (final String key : section.singleLayerKeySet()) {
+        for (final String bankId : section.singleLayerKeySet()) {
 
-            final int bankId = Integer.parseInt(key);
-            final double balance = section.getDouble("balance");
+            final Double balance = section.getDouble("balance");
             final String lastWithdraw = section.getString("last-withdraw");
 
             user.addBankData(new UserBankData(bankId, balance, LocalDateTime.parse(lastWithdraw)));
         }
 
         return user;
+    }
+
+    /**
+     * Loads user asynchronously with a timeout of 5 seconds, otherwise, it will load the user urgently
+     *
+     * @param uniqueId is the unique of the {@link User} to be loaded
+     * @return the loaded user
+     */
+    public User loadUserByUniqueId(final @NotNull UUID uniqueId) {
+        try {
+            return CompletableFuture.supplyAsync(() -> loadUserByUniqueIdUrgently(uniqueId)).get(5, TimeUnit.SECONDS);
+        } catch (ExecutionException | InterruptedException | TimeoutException e) {
+            e.printStackTrace();
+        }
+        return loadUserByUniqueIdUrgently(uniqueId);
     }
 
     /**
@@ -65,6 +82,19 @@ public class DatabaseHandler {
             userFile.set(uniqueId + "." + bankData.getBankId() + ".last-withdraw", bankData.getLastWithdraw().toString());
 
         }
+    }
+
+    /**
+     * Deletes a specific userBankData of a user on the database
+     *
+     * @param uniqueId the uniqueId to the {@link User}
+     * @param bankId the Id of the bank to be removed
+     */
+    public void deleteUserBankData(final @NotNull UUID uniqueId,
+                                   final @NotNull String bankId) {
+
+        final Json userFile = getOrLoadUserFile(uniqueId);
+        userFile.remove(uniqueId + "." + bankId);
 
     }
 

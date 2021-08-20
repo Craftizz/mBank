@@ -6,12 +6,12 @@ import java.time.LocalDateTime;
 
 public class UserBankData {
 
-    private final Integer bankId;
-    private final Double balance;
+    private final String bankId;
 
     private LocalDateTime lastWithdraw;
+    private Double balance;
 
-    public UserBankData(final @NotNull Integer bankId,
+    public UserBankData(final @NotNull String bankId,
                         final @NotNull Double balance,
                         final @NotNull LocalDateTime lastWithdraw) {
         this.bankId = bankId;
@@ -22,8 +22,22 @@ public class UserBankData {
     /**
      * @return the id of {@link io.github.craftizz.mbank.bank.Bank}
      */
-    public @NotNull Integer getBankId() {
+    public @NotNull String getBankId() {
         return bankId;
+    }
+
+    /**
+     * @param amount to be deposited
+     */
+    public void deposit(final @NotNull Double amount) {
+        this.balance += amount;
+    }
+
+    /**
+     * @param amount to be withdrawn
+     */
+    public void withdraw(final @NotNull Double amount) {
+        this.balance -= amount;
     }
 
     /**

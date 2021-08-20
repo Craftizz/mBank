@@ -1,0 +1,52 @@
+
+
+b01wBank:
+
+  # The ID must be unique and consistent. Once used, you should not change it anymore.
+  id: b01wbank
+
+  # This will be used as a display name of the bank. You can change this anytime you want
+  display-name: "<color:#adff2f>Bank of b01w"
+
+  restrictions:
+
+    # The minimum balance of the player to open an account on this bank
+    minimum-balance: 1000
+
+    # The maximum balance of a bank account
+    maximum-balance: 10000
+
+    # How often a player can withdraw money from the bank. (Use seconds)
+    withdraw-interval: 120
+
+    # The permission to check if player can open an account on this bank
+    permissions:
+      - bank.join.1
+
+  interest:
+
+    # In percentage. Decimals are allowed
+    value: 0.1 # 0.10%
+
+    # How often should we give interest? (Use seconds)
+    interval: 120
+
+  # Commands should be input without '/'. Use <player> as a placeholder
+  commands:
+
+    # Commands that will be executed when a player opened a bank account
+    join-commands:
+      - "say UwU <player> joined!"
+    # Commands that will be executed when a player leaves the bank
+    leave-commands:
+      - "say aww <player> left!"
+
+  fees:
+
+    # How much should we charge when they deposit? In percentage and decimals are allowed
+    deposit-fee: 0.05 # 5%
+
+    # How much should we charge when they withdraw? In percentage and decimals are allowed
+    withdraw-fee: 0.05 # 5%
+
+  risk:

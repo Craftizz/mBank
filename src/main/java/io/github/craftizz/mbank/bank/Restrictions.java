@@ -4,18 +4,17 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class Limits {
+public class Restrictions {
 
-    // Permissions
     private final Double minimumBalance;
     private final Double maximumBalance;
     private final Integer withdrawInterval;
     private final List<String> permissionRequirements;
 
-    public Limits(final @NotNull Double minimumBalance,
-                  final @NotNull Double maximumBalance,
-                  final @NotNull Integer withdrawInterval,
-                  final @NotNull List<String> permissionRequirements) {
+    public Restrictions(final @NotNull Double minimumBalance,
+                        final @NotNull Double maximumBalance,
+                        final @NotNull Integer withdrawInterval,
+                        final @NotNull List<String> permissionRequirements) {
 
         this.minimumBalance = minimumBalance;
         this.maximumBalance = maximumBalance;

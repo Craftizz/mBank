@@ -2,7 +2,6 @@ package io.github.craftizz.mbank.managers;
 
 import io.github.craftizz.mbank.MBank;
 import io.github.craftizz.mbank.bank.user.User;
-import io.github.craftizz.mbank.database.DatabaseHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -32,7 +31,7 @@ public class UserManager {
     public User getUser(final @NotNull UUID uniqueId) {
         final Optional<User> user = Optional.ofNullable(users.get(uniqueId));
         return user.orElseGet(() -> {
-            final User loadedUser = plugin.getDatabaseHandler().loadUserByUniqueId(uniqueId);
+            final User loadedUser = plugin.getDatabaseHandler().loadUserByUniqueIdUrgently(uniqueId);
             users.put(uniqueId, loadedUser);
             return loadedUser;
         });
@@ -44,6 +43,21 @@ public class UserManager {
 
     public User getUser(final @NotNull OfflinePlayer offlinePlayer) {
         return getUser(offlinePlayer.getUniqueId());
+    }
+
+    /**
+     * Loads user to the database. This uses an asynchronous method.
+     *
+     * @param uniqueId the uniqueId of the user
+     * @return the cachedUser
+     */
+    public User loadUser(final @NotNull UUID uniqueId) {
+        final Optional<User> user = Optional.ofNullable(users.get(uniqueId));
+        return user.orElseGet(() -> {
+            final User loadedUser = plugin.getDatabaseHandler().loadUserByUniqueId(uniqueId);
+            users.put(uniqueId, loadedUser);
+            return loadedUser;
+        });
     }
 
     /**
