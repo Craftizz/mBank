@@ -25,6 +25,12 @@ public class InterestTask extends TimedTask {
         this.bankId = bankId;
     }
 
+    /**
+     * This checks if the bank should have the interest happen,
+     * if true, it will execute the interest payout which respects
+     * all the values in {@link Interest}
+     *
+     */
     @Override
     public void compute() {
 

@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 public enum Language {
 
-    ;
+    BANK_DO_NOT_EXIST("");
 
     private final String configPath;
     private String message;

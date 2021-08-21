@@ -3,7 +3,6 @@ package io.github.craftizz.mbank.tasks;
 import io.github.craftizz.mbank.MBank;
 import io.github.craftizz.mbank.bank.Bank;
 import io.github.craftizz.mbank.bank.Crisis;
-import io.github.craftizz.mbank.bank.user.User;
 import io.github.craftizz.mbank.managers.BankManager;
 import io.github.craftizz.mbank.managers.UserManager;
 import io.github.craftizz.mbank.tasks.tasktypes.TimedTask;
