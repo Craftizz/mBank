@@ -40,7 +40,7 @@ public class User {
      * @return the new bankData
      */
     public UserBankData createBankData(final @NotNull String bankId) {
-        final UserBankData userBankData = new UserBankData(bankId, 0d, LocalDateTime.now());
+        final UserBankData userBankData = new UserBankData(bankId, 0d, 0d, LocalDateTime.now());
         bankData.add(userBankData);
         return userBankData;
     }

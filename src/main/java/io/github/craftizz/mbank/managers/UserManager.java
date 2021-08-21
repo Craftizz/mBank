@@ -85,6 +85,13 @@ public class UserManager {
     }
 
     /**
+     * @return the hashmap of users
+     */
+    public HashMap<UUID, User> getUsers() {
+        return users;
+    }
+
+    /**
      * Saves all of the loaded users to the database asynchronously
      */
     public void saveAllUsers() {
@@ -101,6 +108,8 @@ public class UserManager {
                 userIterator.remove();
             }
         }
+
+        databaseHandler.unloadUnusedUserFile();
     }
 
     /**

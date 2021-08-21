@@ -1,6 +1,7 @@
 
 
 b01wBank:
+
   # The ID must be unique and consistent. Once used, you should not change it anymore.
   id: b01wbank
   # This will be used as a display name of the bank. You can change this anytime you want
@@ -41,11 +42,11 @@ b01wBank:
   crisis:
     # What are the chances the crisis will happen?
     chance-to-happen: 0.30
-    # What ar ethe chance that the player will lose money?
+    # What are the chance that the player will lose money?
     chance-to-lose: 0.50
     # The minimum lost in percentage that a player can lose
     minimum-lost: 0.20
     # The maximum lost in percentage that a player can lose
-    maximum-lost:
+    maximum-lost: 0.50
     # How often should should the crisis happen? (In seconds)
-    interval: 320
+    interval: 45

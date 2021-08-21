@@ -29,7 +29,7 @@ public final class MBank extends JavaPlugin {
 
 
         // Initialize Database and Configuration
-        this.databaseHandler = new DatabaseHandler();
+        this.databaseHandler = new DatabaseHandler(this);
         this.configurationHandler = new ConfigurationHandler(this);
 
         // Initialize Hooks

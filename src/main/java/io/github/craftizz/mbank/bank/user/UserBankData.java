@@ -10,12 +10,15 @@ public class UserBankData {
 
     private LocalDateTime lastWithdraw;
     private Double balance;
+    private Double lostInLastCrisis;
 
     public UserBankData(final @NotNull String bankId,
                         final @NotNull Double balance,
+                        final @NotNull Double lostInLastCrisis,
                         final @NotNull LocalDateTime lastWithdraw) {
         this.bankId = bankId;
         this.balance = balance;
+        this.lostInLastCrisis = lostInLastCrisis;
         this.lastWithdraw = lastWithdraw;
     }
 
@@ -59,5 +62,17 @@ public class UserBankData {
      */
     public void setLastWithdraw(LocalDateTime lastWithdraw) {
         this.lastWithdraw = lastWithdraw;
+    }
+
+    public void setLostInLastCrisis(Double lostInLastCrisis) {
+        this.lostInLastCrisis = lostInLastCrisis;
+    }
+
+    /**
+     * @return the last lost that the {@link User} lost in the
+     * last bank crisis
+     */
+    public Double getLostInLastCrisis() {
+        return lostInLastCrisis;
     }
 }

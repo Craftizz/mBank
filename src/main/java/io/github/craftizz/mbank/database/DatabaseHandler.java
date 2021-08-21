@@ -3,15 +3,13 @@ package io.github.craftizz.mbank.database;
 import de.leonhard.storage.Json;
 import de.leonhard.storage.LightningBuilder;
 import de.leonhard.storage.sections.FlatFileSection;
+import io.github.craftizz.mbank.MBank;
 import io.github.craftizz.mbank.bank.user.User;
 import io.github.craftizz.mbank.bank.user.UserBankData;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -22,9 +20,11 @@ public class DatabaseHandler {
     private static final String dataPath = "plugins/mBank/data/users/";
 
     private final HashMap<UUID, Json> loadedUsersFiles;
+    private final MBank plugin;
 
-    public DatabaseHandler() {
+    public DatabaseHandler(final @NotNull MBank plugin) {
         this.loadedUsersFiles = new HashMap<>();
+        this.plugin = plugin;
     }
 
     /**
@@ -42,10 +42,11 @@ public class DatabaseHandler {
 
         for (final String bankId : section.singleLayerKeySet()) {
 
-            final Double balance = section.getDouble("balance");
-            final String lastWithdraw = section.getString("last-withdraw");
+            final Double balance = section.getDouble(bankId + ".balance");
+            final Double lostInLastCrisis = section.getDouble(bankId + ".lost-in-crisis");
+            final String lastWithdraw = section.getString(bankId + ".last-withdraw");
 
-            user.addBankData(new UserBankData(bankId, balance, LocalDateTime.parse(lastWithdraw)));
+            user.addBankData(new UserBankData(bankId, balance, lostInLastCrisis, LocalDateTime.parse(lastWithdraw)));
         }
 
         return user;
@@ -79,9 +80,11 @@ public class DatabaseHandler {
         for (final UserBankData bankData : user.getBankData()) {
 
             userFile.set(uniqueId + "." + bankData.getBankId() + ".balance", bankData.getBalance());
+            userFile.set(uniqueId + "." + bankData.getBankId() + ".lost-in-crisis", bankData.getLostInLastCrisis());
             userFile.set(uniqueId + "." + bankData.getBankId() + ".last-withdraw", bankData.getLastWithdraw().toString());
 
         }
+
     }
 
     /**
@@ -107,6 +110,11 @@ public class DatabaseHandler {
         for (User user : userCollection) {
             saveUser(user);
         }
+    }
+
+    public void unloadUnusedUserFile() {
+        final Set<UUID> users = plugin.getUserManager().getUsers().keySet();
+        loadedUsersFiles.keySet().removeIf(uuid -> !users.contains(uuid));
     }
 
     /**

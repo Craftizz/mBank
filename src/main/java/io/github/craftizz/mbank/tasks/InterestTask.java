@@ -12,38 +12,32 @@ import org.jetbrains.annotations.NotNull;
 
 public class InterestTask extends TimedTask {
 
+    private final String bankId;
+
     private final BankManager bankManager;
     private final UserManager userManager;
 
-    public InterestTask(final @NotNull MBank plugin) {
+    public InterestTask(final @NotNull MBank plugin,
+                        final @NotNull String bankId) {
         super(1);
         this.bankManager = plugin.getBankManager();
         this.userManager = plugin.getUserManager();
+        this.bankId = bankId;
     }
 
     @Override
     public void compute() {
 
-        // Loop All Banks
-        for (final Bank bank : bankManager.getBanks()) {
+        final Bank bank = bankManager.getBank(bankId);
+        final Interest interest = bank.getInterest();
 
-            //  Get Interest of the Bank
-            final Interest interest = bank.getInterest();
-            Bukkit.getLogger().info("Giving Interest in " + interest.getNextPayout());
+        if (!interest.shouldGiveInterest()) return;
+        interest.calculateNextPayout();
 
-            // Check if should give interest
-            if (!interest.shouldGiveInterest()) return;
-
-            Bukkit.getLogger().warning("Giving Interest...");
-
-            // Reset Payout
-            interest.calculateNextPayout();
-
-            for (final Player player : Bukkit.getOnlinePlayers()) {
-                userManager.getUser(player)
-                        .getUserBankData(bank.getId())
-                        .ifPresent(bankData -> bankData.deposit(interest.calculateInterest(bankData.getBalance())));
-            }
+        for (final Player player : Bukkit.getOnlinePlayers()) {
+            userManager.getUser(player)
+                    .getUserBankData(bank.getId())
+                    .ifPresent(bankData -> bankData.deposit(interest.calculateInterest(bankData.getBalance())));
         }
     }
 }

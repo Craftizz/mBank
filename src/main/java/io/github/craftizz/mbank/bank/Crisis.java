@@ -2,7 +2,7 @@ package io.github.craftizz.mbank.bank;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Random;
+import java.time.LocalDateTime;
 import java.util.SplittableRandom;
 
 public class Crisis {
@@ -39,6 +39,7 @@ public class Crisis {
             return false;
         }
 
+        calculateNextCrisis();
         return !(Math.random() >= chanceToHappen);
     }
 
@@ -50,7 +51,10 @@ public class Crisis {
      * @return the money to be withdrawn
      */
     public Double calculateLost(final @NotNull Double balance) {
-        return balance * random.nextDouble(minimumLostInPercentage, maximumLostInPercentage);
+        if (Math.random() <= chanceToLose) {
+            return 0d;
+        }
+        return balance * (random.nextDouble(maximumLostInPercentage, minimumLostInPercentage));
     }
 
     /**
@@ -104,4 +108,17 @@ public class Crisis {
         return interval;
     }
 
+    /**
+     * @return the next crisis interval in seconds
+     */
+    public Integer getNextCrisis() {
+        return timeLeft;
+    }
+
+    /**
+     * @return the next crisis interval in LocalDateTime
+     */
+    public LocalDateTime getNextCrisisInLocalDateTime() {
+        return LocalDateTime.now().plusSeconds(timeLeft);
+    }
 }
