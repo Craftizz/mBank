@@ -89,7 +89,7 @@ public class BankWithdrawCommand extends CommandBase {
                     Language.WITHDRAW_DENY_TIME,
                     MessageType.DENY,
                     "bank", bankName,
-                    "time", NumberUtils.convertSeconds((int) ChronoUnit.SECONDS.between(currentTime, allowedTime)));
+                    "time", NumberUtils.convertSeconds(ChronoUnit.SECONDS.between(currentTime, allowedTime)));
             return;
         }
 

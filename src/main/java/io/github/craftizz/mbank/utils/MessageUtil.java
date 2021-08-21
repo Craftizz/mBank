@@ -3,6 +3,7 @@ package io.github.craftizz.mbank.utils;
 import io.github.craftizz.mbank.configuration.Language;
 import io.github.craftizz.mbank.configuration.MessageType;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,6 +24,17 @@ public class MessageUtil {
 
         player.sendMessage(miniMessage.parse(language.getMessage()));
         player.playSound(player.getLocation(), messageType.getSound(), 1, 1);
+    }
+
+    /**
+     * Sends a message to an unknown type of command sender
+     *
+     * @param commandSender the command sender to be sent the message
+     * @param language the language to be sent
+     */
+    public static void sendMessage(final @NotNull CommandSender commandSender,
+                                   final @NotNull Language language) {
+        commandSender.sendMessage(miniMessage.parse(language.getMessage()));
     }
 
     /**

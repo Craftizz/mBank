@@ -3,14 +3,17 @@ package io.github.craftizz.mbank;
 import io.github.craftizz.mbank.bank.Bank;
 import io.github.craftizz.mbank.commands.*;
 import io.github.craftizz.mbank.configuration.ConfigurationHandler;
+import io.github.craftizz.mbank.configuration.Language;
 import io.github.craftizz.mbank.database.DatabaseHandler;
 import io.github.craftizz.mbank.hooks.VaultHook;
 import io.github.craftizz.mbank.listeners.PlayerJoinListener;
 import io.github.craftizz.mbank.managers.BankManager;
 import io.github.craftizz.mbank.managers.TaskManager;
 import io.github.craftizz.mbank.managers.UserManager;
+import io.github.craftizz.mbank.utils.MessageUtil;
 import me.mattstudios.mf.base.CommandManager;
 import me.mattstudios.mf.base.CompletionHandler;
+import me.mattstudios.mf.base.MessageHandler;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -55,6 +58,7 @@ public final class MBank extends JavaPlugin {
 
         // Initialize Commands
         registerTabCompletions();
+        setCommandDefaultMessages();
         commandManager.register(
                 new BankBalanceCommand(this),
                 new BankDepositCommand(this),
@@ -89,6 +93,12 @@ public final class MBank extends JavaPlugin {
                 .collect(Collectors.toList()));
 
         completionHandler.register("#amount", input -> List.of("1", "100", "1000", "10000", "100000"));
+    }
+
+    public void setCommandDefaultMessages() {
+        final MessageHandler messageHandler = commandManager.getMessageHandler();
+        messageHandler.register("cmd.no.exists", sender -> MessageUtil.sendMessage(sender, Language.COMMAND_NOT_EXIST));
+        messageHandler.register("cmd.wrong.usage", sender -> MessageUtil.sendMessage(sender, Language.COMMAND_WRONG_USAGE));
     }
 
     public DatabaseHandler getDatabaseHandler() {

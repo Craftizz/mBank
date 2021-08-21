@@ -8,6 +8,11 @@
 # You can use multiline through YAML Multiline ( message: -| )
 #
 
+# General Messages
+command-not-exist: "<color:#f34723>That command do not exist!"
+command-wrong-usage: "<color:#f34723>Invalid command usage"
+
+
 # Success Messages
 bank-joined: "<color:#a2aab3>You joined <bank> bank!" # <bank>
 bank-left: "<color:#a2aab3>You left <bank> bank!" # <bank>
@@ -18,6 +23,7 @@ bank-interest-earn: "<color:#a2aab3>You earned $<amount> as an interest from <ba
 bank-crisis-lost: "<color:#a2aab3>You lost $<amount> because of a crisis in <bank>" # <amount>,<bank>
 bank-crisis-not-affected: "<color:#a2aab3>There was a crisis in <bank> but you were not affected!" # <bank>
 
+
 # Restriction Messages
 no-bank-access: "<color:#f34723>You do not have access to that <bank> bank" # <bank>
 no-permission-to-join:  "<color:#f34723>You do not have access to join <bank> bank" # <bank>
@@ -25,7 +31,7 @@ not-enough-minimum-balance: "<color:#f34723>You need $<amount> to join <bank> ba
 withdraw-deny-time: "<color:#f34723>You can only withdraw from <bank> bank after <time>" # <bank>,<time>
 maximum-balance-reached: "<color:#f34723>You cannot deposit $<amount> because you've reached the maximum balance in <bank> bank!" # <amount>,<bank>
 maximum-bank-reached: "<color:#f34723>You cannot join <bank> because you have reached the maximum banks that you can join!" # <bank>
-
+interest-max-balance: "<color:#f34723>You did not receive interest because you have reached the maximum balance in <bank> bank!" # <bank>
 
 # Deny Messages
 do-not-have-bank: "<color:#f34723>You do not have a bank!"

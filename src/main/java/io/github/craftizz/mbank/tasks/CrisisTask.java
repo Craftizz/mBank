@@ -68,8 +68,6 @@ public class CrisisTask extends TimedTask {
                                         "bank", bank.getId(),
                                         "amount", NumberUtils.formatCurrency(totalLost));
                             }
-
-
                         }
                     });
         }

@@ -41,6 +41,7 @@ public class InterestTask extends TimedTask {
         final Interest interest = bank.getInterest();
 
         if (!interest.shouldGiveInterest()) return;
+
         interest.calculateNextPayout();
 
         final double bankLimit = bank.getRestrictions().getMaximumBalance();
@@ -51,6 +52,7 @@ public class InterestTask extends TimedTask {
                     .ifPresent(bankData -> {
 
                         double interestEarning = interest.calculateInterest(bankData.getBalance());
+
                         if (interestEarning != 0d) {
 
                             final double newBalance = interestEarning + bankData.getBalance();
@@ -60,11 +62,21 @@ public class InterestTask extends TimedTask {
                             }
 
                             bankData.deposit(interestEarning);
-                            MessageUtil.sendMessage(player,
-                                    Language.BANK_INTEREST_EARN,
-                                    MessageType.INFORMATION,
-                                    "bank", bank.getId(),
-                                    "amount", NumberUtils.formatCurrency(interestEarning));
+
+                            if (interestEarning == 0d) {
+                                MessageUtil.sendMessage(player,
+                                        Language.INTEREST_MAX_BALANCE,
+                                        MessageType.INFORMATION,
+                                        "bank", bank.getId());
+                            }
+
+                            else {
+                                MessageUtil.sendMessage(player,
+                                        Language.BANK_INTEREST_EARN,
+                                        MessageType.INFORMATION,
+                                        "bank", bank.getId(),
+                                        "amount", NumberUtils.formatCurrency(interestEarning));
+                            }
                         }
                     });
         }

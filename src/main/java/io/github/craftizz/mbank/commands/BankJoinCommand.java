@@ -70,6 +70,15 @@ public class BankJoinCommand extends CommandBase {
             return;
         }
 
+        // Check if player have permission mbank.banks.join.*bankname*
+        if (!player.hasPermission("mbank.banks.join." + bankName)) {
+            MessageUtil.sendMessage(player,
+                    Language.NO_PERMISSION_TO_JOIN,
+                    MessageType.DENY,
+                    "bank", bankName);
+            return;
+        }
+
         // Check Permission Requirements
         for (final String permission : restrictions.getPermissionRequirements()) {
             if (!vaultPermission.playerHas(player, permission)) {
