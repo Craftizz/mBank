@@ -9,6 +9,7 @@ import io.github.craftizz.mbank.configuration.MessageType;
 import io.github.craftizz.mbank.managers.BankManager;
 import io.github.craftizz.mbank.managers.UserManager;
 import io.github.craftizz.mbank.utils.MessageUtil;
+import io.github.craftizz.mbank.utils.NumberUtils;
 import me.mattstudios.mf.annotations.Alias;
 import me.mattstudios.mf.annotations.Command;
 import me.mattstudios.mf.annotations.Optional;
@@ -34,7 +35,6 @@ public class BankBalanceCommand extends CommandBase {
     @SubCommand("balance")
     public void onBankBalanceCommand(final @NotNull Player player) {
 
-
         final User user = userManager.getUser(player);
 
         // Check if has a bank data
@@ -53,8 +53,8 @@ public class BankBalanceCommand extends CommandBase {
 
         // Send message to player
         MessageUtil.sendMessage(player,
-                Language.BANK_DEPOSITED,
+                Language.BANK_BALANCE,
                 MessageType.INFORMATION,
-                "amount", String.valueOf(totalBalance));
+                "amount", NumberUtils.formatCurrency(totalBalance));
     }
 }

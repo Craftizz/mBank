@@ -10,6 +10,7 @@ import io.github.craftizz.mbank.hooks.VaultHook;
 import io.github.craftizz.mbank.managers.BankManager;
 import io.github.craftizz.mbank.managers.UserManager;
 import io.github.craftizz.mbank.utils.MessageUtil;
+import io.github.craftizz.mbank.utils.NumberUtils;
 import me.mattstudios.mf.annotations.Alias;
 import me.mattstudios.mf.annotations.Command;
 import me.mattstudios.mf.annotations.Completion;
@@ -63,7 +64,7 @@ public class BankDepositCommand extends CommandBase {
         }
 
         // Check if amount is negative
-        if (amount >= 0) {
+        if (amount <= 0) {
             MessageUtil.sendMessage(player,
                     Language.NEGATIVE_NOT_ALLOWED,
                     MessageType.DENY,
@@ -80,17 +81,18 @@ public class BankDepositCommand extends CommandBase {
             MessageUtil.sendMessage(player,
                     Language.NOT_ENOUGH_MONEY,
                     MessageType.DENY,
-                    "amount", String.valueOf(amount));
+                    "amount", NumberUtils.formatCurrency(amount));
             return;
         }
 
         // Check Restriction
-        if (bank.getRestrictions().getMaximumBalance() < (bankBalance + amount)) {
+        final double fee = bank.getFees().calculateDepositFee(amount);
+        if (bank.getRestrictions().getMaximumBalance() < (bankBalance + (amount - fee))) {
             MessageUtil.sendMessage(player,
                     Language.MAXIMUM_BALANCE_REACHED,
                     MessageType.DENY,
                     "bank", bankName,
-                    "amount", String.valueOf(amount));
+                    "amount", NumberUtils.formatCurrency(amount));
             return;
         }
 
@@ -100,8 +102,8 @@ public class BankDepositCommand extends CommandBase {
                 Language.BANK_DEPOSITED,
                 MessageType.INFORMATION,
                 "bank", bankName,
-                "amount", String.valueOf(amount),
-                "fee", String.valueOf(bank.getFees().calculateDepositFee(amount)));
+                "amount", NumberUtils.formatCurrency(amount - fee),
+                "fee", NumberUtils.formatCurrency(fee));
     }
 
 }

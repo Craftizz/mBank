@@ -10,6 +10,7 @@ import io.github.craftizz.mbank.hooks.VaultHook;
 import io.github.craftizz.mbank.managers.BankManager;
 import io.github.craftizz.mbank.managers.UserManager;
 import io.github.craftizz.mbank.utils.MessageUtil;
+import io.github.craftizz.mbank.utils.NumberUtils;
 import me.mattstudios.mf.annotations.*;
 import me.mattstudios.mf.base.CommandBase;
 import net.milkbowl.vault.permission.Permission;
@@ -84,12 +85,12 @@ public class BankJoinCommand extends CommandBase {
         final Double playerBalance = VaultHook.getEconomy().getBalance(player);
         final Double minimumBalance = restrictions.getMinimumBalance();
 
-        if (minimumBalance >= playerBalance) {
+        if (minimumBalance > playerBalance) {
             MessageUtil.sendMessage(player,
                     Language.NOT_ENOUGH_MINIMUM_BALANCE,
                     MessageType.DENY,
                     "bank", bankName,
-                    "amount", String.valueOf(minimumBalance));
+                    "amount", NumberUtils.formatCurrency(minimumBalance));
             return;
         }
 

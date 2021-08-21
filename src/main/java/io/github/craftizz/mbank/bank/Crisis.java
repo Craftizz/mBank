@@ -45,7 +45,7 @@ public class Crisis {
 
     /**
      * Calculates the amount to be taken from the balance during a crisis.
-     * This will respect the maximum and minimum lost
+     * This will respect the maximum and minimum lost values
      *
      * @param balance is the balance to be calculated
      * @return the money to be withdrawn
@@ -54,7 +54,7 @@ public class Crisis {
         if (Math.random() <= chanceToLose) {
             return 0d;
         }
-        return balance * (random.nextDouble(maximumLostInPercentage, minimumLostInPercentage));
+        return balance * (random.nextDouble(minimumLostInPercentage, maximumLostInPercentage));
     }
 
     /**

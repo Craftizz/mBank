@@ -56,6 +56,8 @@ public class BankExpansion extends PlaceholderExpansion {
                 "%mbank_<bank>_fees_withdraw%",
                 "%mbank_<bank>_restriction_minimum%",
                 "%mbank_<bank>_restriction_minimum_formatted%",
+                "%mbank_<bank>_restriction_maximum%",
+                "%mbank_<bank>_restriction_maximum_formatted%",
                 "%mbank_<bank>_restriction_withdrawinterval",
                 "%mbank_<bank>_restriction_withdrawinterval_formatted",
                 "%mbank_<bank>_restriction_permissions",
@@ -126,8 +128,6 @@ public class BankExpansion extends PlaceholderExpansion {
 
                     case "value":
                         return String.valueOf(interest.getInterest());
-
-
 
                 }
 

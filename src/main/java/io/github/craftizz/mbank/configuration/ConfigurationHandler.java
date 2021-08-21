@@ -51,9 +51,9 @@ public class ConfigurationHandler {
             final String bankName = section.getString("display-name");
 
             // Restriction
-            final Double minimumBalance = section.getDouble("restriction" + ".minimum-balance");
-            final Double maximumBalance = section.getDouble("restriction" + ".maximum-balance");
-            final Integer withdrawInterval = section.getInt("restriction" + ".withdraw-interval");
+            final Double minimumBalance = section.getDouble("restrictions" + ".minimum-balance");
+            final Double maximumBalance = section.getDouble("restrictions" + ".maximum-balance");
+            final Integer withdrawInterval = section.getInt("restrictions" + ".withdraw-interval");
             final List<String> permissions = section.getStringList("restriction" + ".permissions");
 
             // Interest

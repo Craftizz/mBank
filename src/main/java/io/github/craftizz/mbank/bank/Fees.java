@@ -20,7 +20,7 @@ public class Fees {
      * @return the deposit fee
      */
     public Double calculateDepositFee(final @NotNull Double amount) {
-        return amount - (amount * depositFee);
+        return amount * depositFee;
     }
 
     /**
@@ -30,7 +30,7 @@ public class Fees {
      * @return the withdraw fee
      */
     public Double calculateWithdrawFee(final @NotNull Double amount) {
-        return amount - (amount * withdrawFee);
+        return amount * withdrawFee;
     }
 
     /**

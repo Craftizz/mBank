@@ -8,6 +8,10 @@ public class NumberUtils {
 
     private final static DecimalFormat formatter = new DecimalFormat("###,###,##0.00");
 
+    public static String convertSeconds(final @NotNull Long timeInSeconds) {
+        return convertSeconds(timeInSeconds.intValue());
+    }
+
     public static String convertSeconds(final @NotNull Integer timeInSeconds) {
 
         final StringBuilder builder = new StringBuilder();

@@ -22,7 +22,7 @@ b01wBank:
     # In percentage. Decimals are allowed
     value: 0.1 # 0.10%
     # How often should we give interest? (Use seconds)
-    interval: 60
+    interval: 120
 
   # Commands should be input without '/'. Use <player> as a placeholder
   commands:
@@ -49,4 +49,4 @@ b01wBank:
     # The maximum lost in percentage that a player can lose
     maximum-lost: 0.50
     # How often should should the crisis happen? (In seconds)
-    interval: 45
+    interval: 600

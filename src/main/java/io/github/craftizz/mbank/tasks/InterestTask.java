@@ -9,6 +9,7 @@ import io.github.craftizz.mbank.managers.BankManager;
 import io.github.craftizz.mbank.managers.UserManager;
 import io.github.craftizz.mbank.tasks.tasktypes.TimedTask;
 import io.github.craftizz.mbank.utils.MessageUtil;
+import io.github.craftizz.mbank.utils.NumberUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -42,19 +43,29 @@ public class InterestTask extends TimedTask {
         if (!interest.shouldGiveInterest()) return;
         interest.calculateNextPayout();
 
+        final double bankLimit = bank.getRestrictions().getMaximumBalance();
+
         for (final Player player : Bukkit.getOnlinePlayers()) {
             userManager.getUser(player)
                     .getUserBankData(bank.getId())
                     .ifPresent(bankData -> {
 
-                        final double interestEarning = interest.calculateInterest(bankData.getBalance());
-                        bankData.deposit(interestEarning);
+                        double interestEarning = interest.calculateInterest(bankData.getBalance());
+                        if (interestEarning != 0d) {
 
-                        MessageUtil.sendMessage(player,
-                                Language.BANK_DEPOSITED,
-                                MessageType.INFORMATION,
-                                "bank", bank.getId(),
-                                "amount", String.valueOf(interestEarning));
+                            final double newBalance = interestEarning + bankData.getBalance();
+
+                            if (newBalance > bankLimit) {
+                                interestEarning = newBalance - Math.max(newBalance, bankLimit);
+                            }
+
+                            bankData.deposit(interestEarning);
+                            MessageUtil.sendMessage(player,
+                                    Language.BANK_INTEREST_EARN,
+                                    MessageType.INFORMATION,
+                                    "bank", bank.getId(),
+                                    "amount", NumberUtils.formatCurrency(interestEarning));
+                        }
                     });
         }
     }

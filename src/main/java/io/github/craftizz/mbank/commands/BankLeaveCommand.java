@@ -3,6 +3,7 @@ package io.github.craftizz.mbank.commands;
 import io.github.craftizz.mbank.MBank;
 import io.github.craftizz.mbank.bank.Bank;
 import io.github.craftizz.mbank.bank.user.User;
+import io.github.craftizz.mbank.bank.user.UserBankData;
 import io.github.craftizz.mbank.configuration.Language;
 import io.github.craftizz.mbank.configuration.MessageType;
 import io.github.craftizz.mbank.managers.BankManager;
@@ -15,6 +16,8 @@ import me.mattstudios.mf.annotations.SubCommand;
 import me.mattstudios.mf.base.CommandBase;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
 
 @Command("mb")
 @Alias("bank")
@@ -46,8 +49,10 @@ public class BankLeaveCommand extends CommandBase {
             return;
         }
 
+        final Optional<UserBankData> optionalUserBankData = user.getUserBankData(bankName);
+
         // Check if player is a bankUser of the bank
-        if (user.getUserBankData(bankName).isEmpty()) {
+        if (optionalUserBankData.isEmpty()) {
             MessageUtil.sendMessage(player,
                     Language.NOT_IN_BANK,
                     MessageType.DENY,
@@ -55,11 +60,16 @@ public class BankLeaveCommand extends CommandBase {
             return;
         }
 
+        final UserBankData userBankData = optionalUserBankData.get();
+
         // Delete Account
+        bankManager.withdraw(bank, player, userBankData.getBalance());
         bankManager.deleteAccount(bank, player);
         MessageUtil.sendMessage(player,
-                Language.BANK_JOINED,
+                Language.BANK_LEFT,
                 MessageType.INFORMATION,
                 "bank", bankName);
+
+
     }
 }

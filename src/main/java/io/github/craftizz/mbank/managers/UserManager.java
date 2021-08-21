@@ -96,6 +96,10 @@ public class UserManager {
      */
     public void saveAllUsers() {
 
+        final long startTime = System.currentTimeMillis();
+
+        plugin.getLogger().warning("Saving Users Bank Data...");
+
         final DatabaseHandler databaseHandler = plugin.getDatabaseHandler();
         final Iterator<User> userIterator = users.values().iterator();
 
@@ -110,13 +114,14 @@ public class UserManager {
         }
 
         databaseHandler.unloadUnusedUserFile();
+
+        plugin.getLogger().warning("Finished Saving Users Bank Data in " + (System.currentTimeMillis() - startTime) + "ms");
     }
 
     /**
      * Starts saving all users. Used on {@link MBank#onEnable()}
      */
     public void startSaving() {
-        plugin.getLogger().warning("Saving Users Bank Data...");
         Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, this::saveAllUsers, 600, 600);
     }
 

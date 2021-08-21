@@ -4,7 +4,7 @@ main: io.github.craftizz.mbank.MBank
 api-version: 1.17
 
 authors: [ Craftizz, b01w ]
-depend: [Vault]
+depend: [Vault, PlaceholderAPI]
 softdepend: [Essentials]
 
 description: Banking System of MinEconomy 

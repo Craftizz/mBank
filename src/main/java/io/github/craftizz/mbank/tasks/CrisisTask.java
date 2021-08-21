@@ -9,6 +9,7 @@ import io.github.craftizz.mbank.managers.BankManager;
 import io.github.craftizz.mbank.managers.UserManager;
 import io.github.craftizz.mbank.tasks.tasktypes.TimedTask;
 import io.github.craftizz.mbank.utils.MessageUtil;
+import io.github.craftizz.mbank.utils.NumberUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
@@ -40,13 +41,7 @@ public class CrisisTask extends TimedTask {
         final Bank bank = bankManager.getBank(bankId);
         final Crisis crisis = bank.getCrisis();
 
-        // Remove
-        Bukkit.getLogger().info("Crisis in " + crisis.getNextCrisis());
-
         if (!crisis.shouldHappen()) return;
-
-        // Remove
-        Bukkit.getLogger().severe("Crisis is Happening!");
 
         for (final OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
             userManager.getUser(offlinePlayer)
@@ -71,7 +66,7 @@ public class CrisisTask extends TimedTask {
                                         Language.BANK_CRISIS_NOT_AFFECTED,
                                         MessageType.INFORMATION,
                                         "bank", bank.getId(),
-                                        "amount", String.valueOf(totalLost));
+                                        "amount", NumberUtils.formatCurrency(totalLost));
                             }
 
 
