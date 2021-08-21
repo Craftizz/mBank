@@ -45,13 +45,6 @@ public class Bank {
     }
 
     /**
-     * @return the {@link Restrictions} of this bank
-     */
-    public Restrictions getLimits() {
-        return restrictions;
-    }
-
-    /**
      * @return the {@link Interest} of this bank
      */
     public Interest getInterest() {

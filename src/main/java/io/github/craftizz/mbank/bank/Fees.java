@@ -14,6 +14,26 @@ public class Fees {
     }
 
     /**
+     * Calculates the deposit fee of the amount
+     *
+     * @param amount the amount where the deposit fee will be calculated
+     * @return the deposit fee
+     */
+    public Double calculateDepositFee(final @NotNull Double amount) {
+        return amount - (amount * depositFee);
+    }
+
+    /**
+     * Calculates the withdraw fee of the amount
+     *
+     * @param amount the amount where the withdraw fee will be calculated
+     * @return the withdraw fee
+     */
+    public Double calculateWithdrawFee(final @NotNull Double amount) {
+        return amount - (amount * withdrawFee);
+    }
+
+    /**
      * Deposit fee is on percentage
      *
      * @return the deposit fee of {@link Bank}

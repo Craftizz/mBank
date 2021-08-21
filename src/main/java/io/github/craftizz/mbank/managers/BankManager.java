@@ -56,7 +56,7 @@ public class BankManager {
                 .getUserBankData(bank.getId());
 
         bankData.ifPresent(userBankData -> {
-            VaultHook.getEconomy().withdrawPlayer(offlinePlayer, amount);
+            VaultHook.getEconomy().withdrawPlayer(offlinePlayer, (amount - bank.getFees().calculateDepositFee(amount)));
             userBankData.deposit(amount);
         });
     }
@@ -77,7 +77,7 @@ public class BankManager {
                 .getUserBankData(bank.getId());
 
         bankData.ifPresent(userBankData -> {
-            VaultHook.getEconomy().depositPlayer(offlinePlayer, amount);
+            VaultHook.getEconomy().depositPlayer(offlinePlayer, (amount - bank.getFees().calculateWithdrawFee(amount)));
             userBankData.withdraw(amount);
         });
     }

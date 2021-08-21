@@ -1,5 +1,6 @@
 package io.github.craftizz.mbank;
 
+import io.github.craftizz.mbank.bank.Bank;
 import io.github.craftizz.mbank.commands.*;
 import io.github.craftizz.mbank.configuration.ConfigurationHandler;
 import io.github.craftizz.mbank.database.DatabaseHandler;
@@ -9,8 +10,12 @@ import io.github.craftizz.mbank.managers.BankManager;
 import io.github.craftizz.mbank.managers.TaskManager;
 import io.github.craftizz.mbank.managers.UserManager;
 import me.mattstudios.mf.base.CommandManager;
+import me.mattstudios.mf.base.CompletionHandler;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public final class MBank extends JavaPlugin {
 
@@ -49,6 +54,7 @@ public final class MBank extends JavaPlugin {
         manager.registerEvents(new PlayerJoinListener(this), this);
 
         // Initialize Commands
+        registerTabCompletions();
         commandManager.register(
                 new BankBalanceCommand(this),
                 new BankDepositCommand(this),
@@ -68,6 +74,19 @@ public final class MBank extends JavaPlugin {
     @Override
     public void onDisable() {
         userManager.saveAllUsers();
+    }
+
+    public void registerTabCompletions() {
+
+        final CompletionHandler completionHandler = commandManager.getCompletionHandler();
+
+        completionHandler.register("#banks", input -> bankManager
+                .getBanks()
+                .stream()
+                .map(Bank::getId)
+                .collect(Collectors.toList()));
+
+        completionHandler.register("#amount", input -> List.of("1", "100", "1000", "10000", "100000"));
     }
 
     public DatabaseHandler getDatabaseHandler() {
