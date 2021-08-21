@@ -3,9 +3,12 @@ package io.github.craftizz.mbank.tasks;
 import io.github.craftizz.mbank.MBank;
 import io.github.craftizz.mbank.bank.Bank;
 import io.github.craftizz.mbank.bank.Crisis;
+import io.github.craftizz.mbank.configuration.Language;
+import io.github.craftizz.mbank.configuration.MessageType;
 import io.github.craftizz.mbank.managers.BankManager;
 import io.github.craftizz.mbank.managers.UserManager;
 import io.github.craftizz.mbank.tasks.tasktypes.TimedTask;
+import io.github.craftizz.mbank.utils.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
@@ -49,9 +52,30 @@ public class CrisisTask extends TimedTask {
             userManager.getUser(offlinePlayer)
                     .getUserBankData(bank.getId())
                     .ifPresent(bankData -> {
+
                         double totalLost = crisis.calculateLost(bankData.getBalance());
                         bankData.setLostInLastCrisis(totalLost);
                         bankData.withdraw(totalLost);
+
+                        if (offlinePlayer.isOnline()) {
+
+                            if (totalLost == 0d) {
+                                MessageUtil.sendMessage(offlinePlayer.getPlayer(),
+                                        Language.BANK_CRISIS_NOT_AFFECTED,
+                                        MessageType.INFORMATION,
+                                        "bank", bank.getId());
+                            }
+
+                            else {
+                                MessageUtil.sendMessage(offlinePlayer.getPlayer(),
+                                        Language.BANK_CRISIS_NOT_AFFECTED,
+                                        MessageType.INFORMATION,
+                                        "bank", bank.getId(),
+                                        "amount", String.valueOf(totalLost));
+                            }
+
+
+                        }
                     });
         }
     }

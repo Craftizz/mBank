@@ -5,16 +5,26 @@ import org.jetbrains.annotations.NotNull;
 public enum Language {
 
     ALREADY_JOINED_BANK("already-joined-bank"),
+    BANK_BALANCE("bank-balance"),
+    BANK_CRISIS_LOST("bank-crisis-lost"),
+    BANK_CRISIS_NOT_AFFECTED("bank-crisis-not-affected"),
     BANK_DEPOSITED("bank-deposited"),
+    BANK_INTEREST_EARN("bank-interest-earn"),
     BANK_JOINED("bank-joined"),
     BANK_LEFT("bank-left"),
+    BANK_WITHDRAWN("bank-withdrawn"),
+    DO_NOT_HAVE_BANK("do-not-have-bank"),
     MAXIMUM_BALANCE_REACHED("maximum-balance-reached"),
+    MAXIMUM_BANK_REACHED("maximum-bank-reached"),
+    NEGATIVE_NOT_ALLOWED("negative-not-allowed"),
     NO_BANK_ACCESS("no-bank-access"),
     NO_PERMISSION_TO_JOIN("no-permission-to-join"),
     NONEXISTENT_BANK("nonexistent-bank"),
     NOT_ENOUGH_MINIMUM_BALANCE("not-enough-minimum-balance"),
     NOT_ENOUGH_MONEY("not-enough-money"),
-    NOT_IN_BANK("not-in-bank");
+    NOT_ENOUGH_MONEY_IN_BANK("not-enough-money-in-bank"),
+    NOT_IN_BANK("not-in-bank"),
+    WITHDRAW_DENY_TIME("withdraw-deny-time");
 
     private final String configPath;
     private String message;

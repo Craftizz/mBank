@@ -69,6 +69,8 @@ public final class MBank extends JavaPlugin {
 
         userManager.startSaving();
         taskManager.startTask();
+
+        new BankExpansion(this).register();
     }
 
     @Override

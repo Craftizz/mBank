@@ -35,7 +35,7 @@ public class Crisis {
      * @return if the crisis should happen according to the time and chance
      */
     public boolean shouldHappen() {
-        if (timeLeft-- >= 0) {
+        if (timeLeft-- > 0) {
             return false;
         }
 

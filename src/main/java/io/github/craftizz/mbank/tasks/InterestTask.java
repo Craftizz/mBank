@@ -3,9 +3,12 @@ package io.github.craftizz.mbank.tasks;
 import io.github.craftizz.mbank.MBank;
 import io.github.craftizz.mbank.bank.Bank;
 import io.github.craftizz.mbank.bank.Interest;
+import io.github.craftizz.mbank.configuration.Language;
+import io.github.craftizz.mbank.configuration.MessageType;
 import io.github.craftizz.mbank.managers.BankManager;
 import io.github.craftizz.mbank.managers.UserManager;
 import io.github.craftizz.mbank.tasks.tasktypes.TimedTask;
+import io.github.craftizz.mbank.utils.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +32,6 @@ public class InterestTask extends TimedTask {
      * This checks if the bank should have the interest happen,
      * if true, it will execute the interest payout which respects
      * all the values in {@link Interest}
-     *
      */
     @Override
     public void compute() {
@@ -43,7 +45,17 @@ public class InterestTask extends TimedTask {
         for (final Player player : Bukkit.getOnlinePlayers()) {
             userManager.getUser(player)
                     .getUserBankData(bank.getId())
-                    .ifPresent(bankData -> bankData.deposit(interest.calculateInterest(bankData.getBalance())));
+                    .ifPresent(bankData -> {
+
+                        final double interestEarning = interest.calculateInterest(bankData.getBalance());
+                        bankData.deposit(interestEarning);
+
+                        MessageUtil.sendMessage(player,
+                                Language.BANK_DEPOSITED,
+                                MessageType.INFORMATION,
+                                "bank", bank.getId(),
+                                "amount", String.valueOf(interestEarning));
+                    });
         }
     }
 }

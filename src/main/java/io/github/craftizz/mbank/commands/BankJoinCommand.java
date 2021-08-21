@@ -10,14 +10,14 @@ import io.github.craftizz.mbank.hooks.VaultHook;
 import io.github.craftizz.mbank.managers.BankManager;
 import io.github.craftizz.mbank.managers.UserManager;
 import io.github.craftizz.mbank.utils.MessageUtil;
-import me.mattstudios.mf.annotations.Command;
-import me.mattstudios.mf.annotations.Completion;
-import me.mattstudios.mf.annotations.SubCommand;
+import me.mattstudios.mf.annotations.*;
 import me.mattstudios.mf.base.CommandBase;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 @Command("mb")
+@Alias("bank")
 public class BankJoinCommand extends CommandBase {
 
     private final MBank plugin;
@@ -57,10 +57,21 @@ public class BankJoinCommand extends CommandBase {
 
         // Start Checking Restrictions
         final Restrictions restrictions = bank.getRestrictions();
+        final Permission vaultPermission = VaultHook.getPermission();
 
-        // Check if player has permission to join the bank
-        for (String permission : restrictions.getPermissionRequirements()) {
-            if (!VaultHook.getPermission().playerHas(player, permission)) {
+       // Check if player can join x banks
+        if (!vaultPermission.playerHas(player, "mbank.banks.max." + user.getBankData().size() + 1)
+                || !vaultPermission.playerHas(player, "mbank.banks.max.*")) {
+            MessageUtil.sendMessage(player,
+                    Language.MAXIMUM_BANK_REACHED,
+                    MessageType.DENY,
+                    "bank", bankName);
+            return;
+        }
+
+        // Check Permission Requirements
+        for (final String permission : restrictions.getPermissionRequirements()) {
+            if (!vaultPermission.playerHas(player, permission)) {
                 MessageUtil.sendMessage(player,
                         Language.NO_PERMISSION_TO_JOIN,
                         MessageType.DENY,

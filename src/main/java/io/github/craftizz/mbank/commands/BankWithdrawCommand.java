@@ -2,16 +2,26 @@ package io.github.craftizz.mbank.commands;
 
 import io.github.craftizz.mbank.MBank;
 import io.github.craftizz.mbank.bank.Bank;
-import io.github.craftizz.mbank.hooks.VaultHook;
+import io.github.craftizz.mbank.bank.Restrictions;
+import io.github.craftizz.mbank.bank.user.User;
+import io.github.craftizz.mbank.bank.user.UserBankData;
+import io.github.craftizz.mbank.configuration.Language;
+import io.github.craftizz.mbank.configuration.MessageType;
 import io.github.craftizz.mbank.managers.BankManager;
 import io.github.craftizz.mbank.managers.UserManager;
+import io.github.craftizz.mbank.utils.MessageUtil;
+import me.mattstudios.mf.annotations.Alias;
 import me.mattstudios.mf.annotations.Command;
 import me.mattstudios.mf.annotations.SubCommand;
 import me.mattstudios.mf.base.CommandBase;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
+
 @Command("mb")
+@Alias("bank")
 public class BankWithdrawCommand extends CommandBase {
 
     private final MBank plugin;
@@ -29,10 +39,71 @@ public class BankWithdrawCommand extends CommandBase {
                                       final @NotNull String bankName,
                                       final @NotNull Double amount) {
 
-        final Double playerBalance = VaultHook.getEconomy().getBalance(player);
-        // Check Minimum Balance
-
         final Bank bank = bankManager.getBank(bankName);
+        final User user = userManager.getUser(player);
+
+        // Check if bank exists
+        if (bank == null) {
+            MessageUtil.sendMessage(player,
+                    Language.NONEXISTENT_BANK,
+                    MessageType.DENY,
+                    "bank", bankName);
+            return;
+        }
+
+        // Check if player is a bankUser of the bank
+        final Optional<UserBankData> bankDataOptional = user.getUserBankData(bankName);
+
+        if (bankDataOptional.isEmpty()) {
+            MessageUtil.sendMessage(player,
+                    Language.NOT_IN_BANK,
+                    MessageType.DENY,
+                    "bank", bankName);
+            return;
+        }
+
+        // Check if amount is negative
+        if (amount >= 0) {
+            MessageUtil.sendMessage(player,
+                    Language.NEGATIVE_NOT_ALLOWED,
+                    MessageType.DENY,
+                    "bank", bankName);
+            return;
+        }
+
+        final UserBankData userBankData = bankDataOptional.get();
+        final Restrictions restrictions = bank.getRestrictions();
+        final double bankBalance = userBankData.getBalance();
+
+        // Check last withdrawn
+        final LocalDateTime allowedTime = userBankData
+                .getLastWithdraw()
+                .plusSeconds(restrictions.getWithdrawInterval());
+
+        if (allowedTime.isBefore(allowedTime)) {
+            MessageUtil.sendMessage(player,
+                    Language.WITHDRAW_DENY_TIME,
+                    MessageType.DENY,
+                    "amount", String.valueOf(amount));
+            return;
+        }
+
+        // Check if player has enough money in the bank
+        if (bankBalance < amount) {
+            MessageUtil.sendMessage(player,
+                    Language.NOT_ENOUGH_MONEY_IN_BANK,
+                    MessageType.DENY,
+                    "amount", String.valueOf(amount));
+            return;
+        }
+
         bankManager.withdraw(bank, player, amount);
+        MessageUtil.sendMessage(player,
+                Language.BANK_WITHDRAWN,
+                MessageType.INFORMATION,
+                "bank", bankName,
+                "amount", String.valueOf(amount),
+                "fee", String.valueOf(bank.getFees().calculateDepositFee(amount)));
+
     }
 }

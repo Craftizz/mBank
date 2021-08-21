@@ -8,6 +8,7 @@ import io.github.craftizz.mbank.configuration.MessageType;
 import io.github.craftizz.mbank.managers.BankManager;
 import io.github.craftizz.mbank.managers.UserManager;
 import io.github.craftizz.mbank.utils.MessageUtil;
+import me.mattstudios.mf.annotations.Alias;
 import me.mattstudios.mf.annotations.Command;
 import me.mattstudios.mf.annotations.Completion;
 import me.mattstudios.mf.annotations.SubCommand;
@@ -16,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 @Command("mb")
+@Alias("bank")
 public class BankLeaveCommand extends CommandBase {
 
     private final MBank plugin;

@@ -10,6 +10,7 @@ import io.github.craftizz.mbank.hooks.VaultHook;
 import io.github.craftizz.mbank.managers.BankManager;
 import io.github.craftizz.mbank.managers.UserManager;
 import io.github.craftizz.mbank.utils.MessageUtil;
+import me.mattstudios.mf.annotations.Alias;
 import me.mattstudios.mf.annotations.Command;
 import me.mattstudios.mf.annotations.Completion;
 import me.mattstudios.mf.annotations.SubCommand;
@@ -20,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 @Command("mb")
+@Alias("bank")
 public class BankDepositCommand extends CommandBase {
 
     private final MBank plugin;
@@ -60,11 +62,20 @@ public class BankDepositCommand extends CommandBase {
             return;
         }
 
+        // Check if amount is negative
+        if (amount >= 0) {
+            MessageUtil.sendMessage(player,
+                    Language.NEGATIVE_NOT_ALLOWED,
+                    MessageType.DENY,
+                    "bank", bankName);
+            return;
+        }
+
         final UserBankData userBankData = bankDataOptional.get();
         final double bankBalance = userBankData.getBalance();
         final double playerBalance = VaultHook.getEconomy().getBalance(player);
 
-        // Check enough money
+        // Check if player has enough money
         if (playerBalance < amount) {
             MessageUtil.sendMessage(player,
                     Language.NOT_ENOUGH_MONEY,
