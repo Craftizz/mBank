@@ -1,10 +1,13 @@
 package io.github.craftizz.mbank.tasks;
 
+import com.Zrips.CMI.Containers.CMIUser;
+import com.Zrips.CMI.PlayerManager;
 import io.github.craftizz.mbank.MBank;
 import io.github.craftizz.mbank.bank.Bank;
 import io.github.craftizz.mbank.bank.Interest;
 import io.github.craftizz.mbank.configuration.Language;
 import io.github.craftizz.mbank.configuration.MessageType;
+import io.github.craftizz.mbank.hooks.CMIHook;
 import io.github.craftizz.mbank.managers.BankManager;
 import io.github.craftizz.mbank.managers.UserManager;
 import io.github.craftizz.mbank.tasks.tasktypes.TimedTask;
@@ -44,9 +47,18 @@ public class InterestTask extends TimedTask {
 
         interest.calculateNextPayout();
 
+        final PlayerManager playerManager = CMIHook.getCmi().getPlayerManager();
         final double bankLimit = bank.getRestrictions().getMaximumBalance();
 
+
         for (final Player player : Bukkit.getOnlinePlayers()) {
+
+            final CMIUser cmiUser = playerManager.getUser(player);
+
+            if (cmiUser.isAfk()) {
+                continue;
+            }
+
             userManager.getUser(player)
                     .getUserBankData(bank.getId())
                     .ifPresent(bankData -> {

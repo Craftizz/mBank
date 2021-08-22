@@ -126,7 +126,6 @@ public class DatabaseHandler {
     public Json getOrLoadUserFile(final @NotNull UUID uniqueId) {
         return Optional.ofNullable(loadedUsersFiles.get(uniqueId))
                 .orElseGet(() -> {
-                    plugin.getLogger().severe("Loading file of " + uniqueId);
                     final Json userFile = LightningBuilder
                             .fromPath(uniqueId.toString(), dataPath)
                             .createJson();

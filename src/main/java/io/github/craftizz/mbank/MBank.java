@@ -5,6 +5,7 @@ import io.github.craftizz.mbank.commands.*;
 import io.github.craftizz.mbank.configuration.ConfigurationHandler;
 import io.github.craftizz.mbank.configuration.Language;
 import io.github.craftizz.mbank.database.DatabaseHandler;
+import io.github.craftizz.mbank.hooks.CMIHook;
 import io.github.craftizz.mbank.hooks.VaultHook;
 import io.github.craftizz.mbank.listeners.PlayerJoinListener;
 import io.github.craftizz.mbank.managers.BankManager;
@@ -26,6 +27,7 @@ public final class MBank extends JavaPlugin {
     private ConfigurationHandler configurationHandler;
 
     private VaultHook vaultHook;
+    private CMIHook cmiHook;
 
     private UserManager userManager;
     private BankManager bankManager;
@@ -46,6 +48,9 @@ public final class MBank extends JavaPlugin {
         vaultHook.setupEconomy(this);
         vaultHook.setupPermission(this);
 
+        this.cmiHook = new CMIHook();
+        cmiHook.setupInstance(this);
+
         // Initialize Managers
         this.userManager = new UserManager(this);
         this.bankManager = new BankManager(this);
@@ -64,6 +69,7 @@ public final class MBank extends JavaPlugin {
                 new BankDepositCommand(this),
                 new BankJoinCommand(this),
                 new BankLeaveCommand(this),
+                new BankStatisticsCommand(this),
                 new BankWithdrawCommand(this)
         );
 
@@ -115,5 +121,9 @@ public final class MBank extends JavaPlugin {
 
     public VaultHook getVaultHook() {
         return vaultHook;
+    }
+
+    public ConfigurationHandler getConfigurationHandler() {
+        return configurationHandler;
     }
 }

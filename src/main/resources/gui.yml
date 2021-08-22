@@ -1,0 +1,26 @@
+# Use MiniMessage for Syntax Guide
+# https://docs.adventure.kyori.net/minimessage.html
+#
+# You can use certain placeholders, format is <placeholder>
+# The message should note if there is a placeholder
+#
+# You can use multiline through YAML Multiline ( message: -| )
+#
+statistics:
+
+  # Supports Color Codes
+  title: "Bank Statistics"
+  filler: GRAY_STAINED_GLASS_PANE
+
+  # balance
+  balance:
+    title: "&#0bda51Balance Information"
+    material: GOLD_BLOCK
+    slot: 22
+    lore: |
+      <color:#3c4151>Bank Statistics
+
+      <color:#a2aab3>Balance: <amount>
+
+
+

@@ -15,6 +15,7 @@ public enum Language {
     BANK_WITHDRAWN("bank-withdrawn"),
     COMMAND_NOT_EXIST("command-not-exist"),
     COMMAND_WRONG_USAGE("command-wrong-usage"),
+    GUI_TITLE("gui-title"),
     INTEREST_MAX_BALANCE("interest-max-balance"),
     DO_NOT_HAVE_BANK("do-not-have-bank"),
     MAXIMUM_BALANCE_REACHED("maximum-balance-reached"),

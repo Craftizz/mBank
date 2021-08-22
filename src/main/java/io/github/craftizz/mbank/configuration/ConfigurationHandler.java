@@ -5,7 +5,10 @@ import de.leonhard.storage.Yaml;
 import de.leonhard.storage.sections.FlatFileSection;
 import io.github.craftizz.mbank.MBank;
 import io.github.craftizz.mbank.bank.*;
+import io.github.craftizz.mbank.gui.BankStatisticsGUI;
 import io.github.craftizz.mbank.managers.BankManager;
+import io.github.craftizz.mbank.utils.MessageUtil;
+import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -16,6 +19,7 @@ public class ConfigurationHandler {
 
     private final Yaml bankConfig;
     private final Yaml language;
+    private final Yaml guiYaml;
 
     public ConfigurationHandler(final @NotNull MBank plugin) {
 
@@ -29,6 +33,11 @@ public class ConfigurationHandler {
         language = LightningBuilder
                 .fromPath("lang", plugin.getDataFolder().getAbsolutePath())
                 .addInputStreamFromResource("lang.yml")
+                .createYaml();
+
+        guiYaml = LightningBuilder
+                .fromPath("gui", plugin.getDataFolder().getAbsolutePath())
+                .addInputStreamFromResource("gui.yml")
                 .createYaml();
     }
 
@@ -86,7 +95,9 @@ public class ConfigurationHandler {
 
             plugin.getLogger().warning("Loaded " + bank.getId() + " bank");
         }
-
     }
 
+    public Yaml getGuiYaml() {
+        return guiYaml;
+    }
 }

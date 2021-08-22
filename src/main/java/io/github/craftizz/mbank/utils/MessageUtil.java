@@ -2,6 +2,8 @@ package io.github.craftizz.mbank.utils;
 
 import io.github.craftizz.mbank.configuration.Language;
 import io.github.craftizz.mbank.configuration.MessageType;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -51,5 +53,27 @@ public class MessageUtil {
                                    final @NotNull String... placeholders) {
         player.sendMessage(miniMessage.parse(language.getMessage(), placeholders));
         player.playSound(player.getLocation(), messageType.getSound(), 1, 1);
+    }
+
+    /**
+     * Use to parse languages for GUIs
+     *
+     * @param message the string message to be parsed
+     * @return the parsed language in component
+     */
+    public static Component parse(String message) {
+        return miniMessage.parse(message)
+                .decoration(TextDecoration.ITALIC, false);
+    }
+
+    /**
+     * Use to parse languages for GUIs with the placeholders as parsed
+     *
+     * @param message the string message to be parsed
+     * @return the parsed language in component
+     */
+    public static Component parse(String message, String... placeholders) {
+        return miniMessage.parse(message, placeholders)
+                .decoration(TextDecoration.ITALIC, false);
     }
 }

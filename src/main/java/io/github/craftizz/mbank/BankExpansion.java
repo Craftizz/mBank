@@ -90,8 +90,9 @@ public class BankExpansion extends PlaceholderExpansion {
                 "%mbank_player_banks_names",
                 "%mbank_player_banks_slots",
                 "%mbank_player_balance",
-                "%mbank_player_balance_formatted"
-
+                "%mbank_player_balance_formatted",
+                "%mbank_player_interest%",
+                "%mbank_player_interest_formatted%"
         );
     }
 
@@ -139,6 +140,24 @@ public class BankExpansion extends PlaceholderExpansion {
                     return NumberUtils.formatCurrency(user.getBankData()
                             .stream()
                             .mapToDouble(UserBankData::getBalance)
+                            .sum());
+                }
+
+            case "interest":
+                if (arguments.length == 3) {
+                    return String.valueOf(user.getBankData().stream()
+                            .mapToDouble(bankData -> bankData.getBalance() * bankManager
+                                    .getBank(bankData.getBankId())
+                                    .getInterest()
+                                    .getInterest())
+                            .sum());
+                }
+                else if (arguments[2].equals("formatted")) {
+                    return NumberUtils.formatCurrency(user.getBankData().stream()
+                            .mapToDouble(bankData -> bankData.getBalance() * bankManager
+                                    .getBank(bankData.getBankId())
+                                    .getInterest()
+                                    .getInterest())
                             .sum());
                 }
 

@@ -51,7 +51,12 @@
                                 <!-- Matt's Framework -->
                                 <relocation>
                                     <pattern>me.mattstudios.mf</pattern>
-                                    <shadedPattern>io.github.craftizz.oneblockworld.libraries.mf</shadedPattern>
+                                    <shadedPattern>io.github.craftizz.mbank.libraries.mf</shadedPattern>
+                                </relocation>
+
+                                <relocation>
+                                    <pattern>dev.triumphteam.gui</pattern>
+                                    <shadedPattern>io.github.craftizz.mbank.libraries.gui</shadedPattern> <!-- Replace package here here -->
                                 </relocation>
 
                             </relocations>
@@ -85,6 +90,10 @@
             <id>placeholderapi</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
+        <repository>
+            <id>repo</id>
+            <url>https://repo.mattstudios.me/artifactory/public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -97,7 +106,7 @@
             <scope>provided</scope>
         </dependency>
 
-        <!--Vault-->
+        <!--Vault - Used for economy and permission support-->
         <dependency>
             <groupId>com.github.MilkBowl</groupId>
             <artifactId>VaultAPI</artifactId>
@@ -126,12 +135,28 @@
             <version>4.1.0-SNAPSHOT</version>
         </dependency>
 
-        <!--PlaceholderAPI-->
+        <!--PlaceholderAPI - Used for placeholder support-->
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
             <version>2.10.10</version>
             <scope>provided</scope>
+        </dependency>
+
+        <!--MFGUI - Used for GUI handling -->
+        <dependency>
+            <groupId>dev.triumphteam</groupId>
+            <artifactId>triumph-gui</artifactId>
+            <version>3.0.3</version>
+        </dependency>
+
+        <!--CMI - Used to check if AFK -->
+        <dependency>
+            <groupId>com.Zripsr</groupId>
+            <artifactId>CMI</artifactId>
+            <version>9.0.2.7</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/lib/CMI9.0.2.7.jar</systemPath>
         </dependency>
 
     </dependencies>
