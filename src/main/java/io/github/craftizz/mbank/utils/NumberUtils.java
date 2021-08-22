@@ -34,6 +34,9 @@ public class NumberUtils {
             builder.append(seconds)
                     .append("s");
         }
+        if (timeInSeconds <= 0) {
+            builder.append("0s");
+        }
 
         return builder.toString();
     }

@@ -5,8 +5,6 @@
 # You can use certain placeholders, format is <placeholder>
 # The message should note if there is a placeholder
 #
-# You can use multiline through YAML Multiline ( message: -| )
-#
 
 # General Messages
 command-not-exist: "<color:#f34723>That command do not exist!"

@@ -13,8 +13,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class BankExpansion extends PlaceholderExpansion {
@@ -188,10 +190,10 @@ public class BankExpansion extends PlaceholderExpansion {
 
                     case "withdrawin":
                         if (arguments.length == 3) {
-                            return String.valueOf(ChronoUnit.SECONDS.between(bankData.getLastWithdraw(), LocalDateTime.now()));
+                            return String.valueOf(LocalDateTime.now().until(bankData.getLastWithdraw().plusSeconds(bank.getRestrictions().getWithdrawInterval()), ChronoUnit.SECONDS));
                         }
                         else if (arguments[3].equals("formatted")) {
-                            return NumberUtils.convertSeconds(ChronoUnit.SECONDS.between(bankData.getLastWithdraw(), LocalDateTime.now()));
+                            return NumberUtils.convertSeconds(LocalDateTime.now().until(bankData.getLastWithdraw().plusSeconds(bank.getRestrictions().getWithdrawInterval()), ChronoUnit.SECONDS));
                         }
 
                     case "lastcrisis":

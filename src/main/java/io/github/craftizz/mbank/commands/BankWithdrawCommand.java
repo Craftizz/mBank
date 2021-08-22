@@ -79,17 +79,18 @@ public class BankWithdrawCommand extends CommandBase {
         final double bankBalance = userBankData.getBalance();
 
         // Check last withdrawn
-        final LocalDateTime currentTime = LocalDateTime.now();
-        final LocalDateTime allowedTime = userBankData
+        final long timeLeft = LocalDateTime.now().until(userBankData
                 .getLastWithdraw()
-                .plusSeconds(restrictions.getWithdrawInterval());
+                .plusSeconds(bank
+                        .getRestrictions()
+                        .getWithdrawInterval()), ChronoUnit.SECONDS);
 
-        if (allowedTime.isBefore(currentTime)) {
+        if (timeLeft > 0) {
             MessageUtil.sendMessage(player,
                     Language.WITHDRAW_DENY_TIME,
                     MessageType.DENY,
                     "bank", bankName,
-                    "time", NumberUtils.convertSeconds(ChronoUnit.SECONDS.between(currentTime, allowedTime)));
+                    "time", NumberUtils.convertSeconds(timeLeft));
             return;
         }
 
