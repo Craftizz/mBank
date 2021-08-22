@@ -10,10 +10,7 @@ import io.github.craftizz.mbank.managers.BankManager;
 import io.github.craftizz.mbank.managers.UserManager;
 import io.github.craftizz.mbank.utils.MessageUtil;
 import io.github.craftizz.mbank.utils.NumberUtils;
-import me.mattstudios.mf.annotations.Alias;
-import me.mattstudios.mf.annotations.Command;
-import me.mattstudios.mf.annotations.Optional;
-import me.mattstudios.mf.annotations.SubCommand;
+import me.mattstudios.mf.annotations.*;
 import me.mattstudios.mf.base.CommandBase;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -33,9 +30,34 @@ public class BankBalanceCommand extends CommandBase {
     }
 
     @SubCommand("balance")
-    public void onBankBalanceCommand(final @NotNull Player player) {
+    public void onBankBalanceCommand(final @NotNull Player player,
+                                     final @Optional @Completion("#banks") String bankName) {
 
         final User user = userManager.getUser(player);
+
+        if (bankName != null) {
+
+            final java.util.Optional<UserBankData> optionalUserBankData = user.getUserBankData(bankName);
+
+            // Check if player is a bankUser of the bank
+            if (optionalUserBankData.isEmpty()) {
+                MessageUtil.sendMessage(player,
+                        Language.NOT_IN_BANK,
+                        MessageType.DENY,
+                        "bank", bankName);
+                return;
+            }
+
+            // Send bank balance
+            final UserBankData userBankData = optionalUserBankData.get();
+            MessageUtil.sendMessage(player,
+                    Language.BANK_BALANCE_SPECIFIC,
+                    MessageType.INFORMATION,
+                    "bank", bankName,
+                    "amount", NumberUtils.formatCurrency(userBankData.getBalance()));
+
+            return;
+        }
 
         // Check if has a bank data
         if (user.getBankData().isEmpty()) {

@@ -11,10 +11,7 @@ import io.github.craftizz.mbank.gui.BankStatisticsGUI;
 import io.github.craftizz.mbank.managers.BankManager;
 import io.github.craftizz.mbank.managers.UserManager;
 import io.github.craftizz.mbank.utils.MessageUtil;
-import me.mattstudios.mf.annotations.Alias;
-import me.mattstudios.mf.annotations.Command;
-import me.mattstudios.mf.annotations.Completion;
-import me.mattstudios.mf.annotations.SubCommand;
+import me.mattstudios.mf.annotations.*;
 import me.mattstudios.mf.base.CommandBase;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -38,6 +35,7 @@ public class BankStatisticsCommand extends CommandBase {
     }
 
     @SubCommand("current")
+    @Permission("mbank.banks.gui.open")
     public void onBankCurrentCommand(final @NotNull Player player,
                                      final @NotNull @Completion("#banks") String bankName) {
 

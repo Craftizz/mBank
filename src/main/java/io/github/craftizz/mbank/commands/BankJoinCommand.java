@@ -1,5 +1,7 @@
 package io.github.craftizz.mbank.commands;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import io.github.craftizz.mbank.MBank;
 import io.github.craftizz.mbank.bank.Bank;
 import io.github.craftizz.mbank.bank.Restrictions;
@@ -17,6 +19,10 @@ import net.milkbowl.vault.permission.Permission;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
 @Command("mb")
 @Alias("bank")
 public class BankJoinCommand extends CommandBase {
@@ -25,10 +31,15 @@ public class BankJoinCommand extends CommandBase {
     private final BankManager bankManager;
     private final UserManager userManager;
 
+    private final Cache<UUID, String> joinRequests;
+
     public BankJoinCommand(final @NotNull MBank plugin) {
         this.plugin = plugin;
         this.bankManager = plugin.getBankManager();
         this.userManager = plugin.getUserManager();
+        this.joinRequests = CacheBuilder.newBuilder()
+                .expireAfterWrite(60, TimeUnit.SECONDS)
+                .build();
     }
 
     @SubCommand("join")
@@ -103,11 +114,36 @@ public class BankJoinCommand extends CommandBase {
             return;
         }
 
-        // Create Account
-        bankManager.createAccount(bank, player);
+
+        final String confirmRequest = joinRequests.getIfPresent(player.getUniqueId());
+
+        if (confirmRequest != null) {
+
+            // Check if right confirmation
+            if (!confirmRequest.equals(bankName)) {
+                MessageUtil.sendMessage(player,
+                        Language.BANK_JOIN_CONFIRM_WRONG,
+                        MessageType.DENY,
+                        "bank", bankName);
+                return;
+            }
+
+            // Create Account
+            bankManager.createAccount(bank, player);
+            MessageUtil.sendMessage(player,
+                    Language.BANK_JOINED,
+                    MessageType.INFORMATION,
+                    "bank", bankName);
+
+            return;
+        }
+
+        // Send join request
+        joinRequests.put(player.getUniqueId(), bankName);
         MessageUtil.sendMessage(player,
-                Language.BANK_JOINED,
+                Language.BANK_JOIN_CONFIRM,
                 MessageType.INFORMATION,
                 "bank", bankName);
+
     }
 }

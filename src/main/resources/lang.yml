@@ -12,10 +12,15 @@ command-wrong-usage: "<color:#f34723>Invalid command usage"
 
 # Success Messages
 bank-joined: "<color:#a2aab3>You joined <bank> bank!" # <bank>
+bank-join-confirm: "<color:#a2aab3>Are you sure you want to join <bank>? Type /bank join <bank> to confirm!"
+bank-join-confirm-wrong: "<color:#a2aab3>You do not have a confirmation to join <bank>!" # <bank>
 bank-left: "<color:#a2aab3>You left <bank> bank!" # <bank>
+bank-left-confirm: "<color:#a2aab3>Are you sure you want to leave <bank>? Type /bank leave <bank> to confirm!" # <bank>
+bank-left-confirm-wrong: "<color:#a2aab3>You do not have a confirmation to leave <bank>!" # <bank>
 bank-deposited: "<color:#a2aab3>You deposited $<amount> ($<fee> deposit fee) to <bank>!" # <amount>,<bank>,<fee>
 bank-withdrawn: "<color:#a2aab3>You withdrawn $<amount> ($<fee> withdraw fee) from <bank>!" # <amount>,<bank>,<fee>
-bank-balance: "<color:#a2aab3>Your current balance in all bank is <amount>" # <amount>
+bank-balance: "<color:#a2aab3>Your current balance in all bank is $<amount>" # <amount>
+bank-balance-specific: "<color:#a2aab3>Your current balance in <bank> is $<amount>" # <bank>,<amount>
 bank-interest-earn: "<color:#a2aab3>You earned $<amount> as an interest from <bank>" # <amount>,<bank>
 bank-crisis-lost: "<color:#a2aab3>You lost $<amount> because of a crisis in <bank>" # <amount>,<bank>
 bank-crisis-not-affected: "<color:#a2aab3>There was a crisis in <bank> but you were not affected!" # <bank>

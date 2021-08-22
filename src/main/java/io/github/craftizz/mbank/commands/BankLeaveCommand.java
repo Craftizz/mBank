@@ -1,5 +1,7 @@
 package io.github.craftizz.mbank.commands;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import io.github.craftizz.mbank.MBank;
 import io.github.craftizz.mbank.bank.Bank;
 import io.github.craftizz.mbank.bank.user.User;
@@ -18,6 +20,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Command("mb")
 @Alias("bank")
@@ -27,10 +31,15 @@ public class BankLeaveCommand extends CommandBase {
     private final BankManager bankManager;
     private final UserManager userManager;
 
+    private final Cache<UUID, String> leaveRequests;
+
     public BankLeaveCommand(final @NotNull MBank plugin) {
         this.plugin = plugin;
         this.bankManager = plugin.getBankManager();
         this.userManager = plugin.getUserManager();
+        this.leaveRequests = CacheBuilder.newBuilder()
+                .expireAfterWrite(60, TimeUnit.SECONDS)
+                .build();
     }
 
     @SubCommand("leave")
@@ -61,15 +70,34 @@ public class BankLeaveCommand extends CommandBase {
         }
 
         final UserBankData userBankData = optionalUserBankData.get();
+        final String confirmRequest = leaveRequests.getIfPresent(player.getUniqueId());
 
-        // Delete Account
-        bankManager.withdraw(bank, player, userBankData.getBalance());
-        bankManager.deleteAccount(bank, player);
+        if (confirmRequest != null) {
+
+            // Check if right confirmation
+            if (!confirmRequest.equals(bankName)) {
+                MessageUtil.sendMessage(player,
+                        Language.BANK_LEFT_CONFIRM_WRONG,
+                        MessageType.DENY,
+                        "bank", bankName);
+                return;
+            }
+
+            // Withdraw all the money in bank and delete account
+            bankManager.withdraw(bank, player, userBankData.getBalance());
+            bankManager.deleteAccount(bank, player);
+            MessageUtil.sendMessage(player,
+                    Language.BANK_LEFT,
+                    MessageType.INFORMATION,
+                    "bank", bankName);
+        }
+
+        // Send join request
+        leaveRequests.put(player.getUniqueId(), bankName);
         MessageUtil.sendMessage(player,
-                Language.BANK_LEFT,
+                Language.BANK_JOIN_CONFIRM,
                 MessageType.INFORMATION,
                 "bank", bankName);
-
 
     }
 }
