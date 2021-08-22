@@ -21,6 +21,7 @@ public class InterestTask extends TimedTask {
 
     private final String bankId;
 
+    private final MBank plugin;
     private final BankManager bankManager;
     private final UserManager userManager;
 
@@ -29,6 +30,7 @@ public class InterestTask extends TimedTask {
         super(1);
         this.bankManager = plugin.getBankManager();
         this.userManager = plugin.getUserManager();
+        this.plugin = plugin;
         this.bankId = bankId;
     }
 
@@ -49,8 +51,9 @@ public class InterestTask extends TimedTask {
 
         final PlayerManager playerManager = CMIHook.getCmi().getPlayerManager();
         final double bankLimit = bank.getRestrictions().getMaximumBalance();
-
-
+        
+        plugin.getLogger().warning(bankId + " will begin giving interest");
+        
         for (final Player player : Bukkit.getOnlinePlayers()) {
 
             final CMIUser cmiUser = playerManager.getUser(player);

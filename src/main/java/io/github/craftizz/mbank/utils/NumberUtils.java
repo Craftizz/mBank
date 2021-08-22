@@ -30,12 +30,9 @@ public class NumberUtils {
                     .append("m ");
         }
 
-        if (seconds > 0) {
+        if (seconds >= 0) {
             builder.append(seconds)
                     .append("s");
-        }
-        if (timeInSeconds <= 0) {
-            builder.append("0s");
         }
 
         return builder.toString();

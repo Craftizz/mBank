@@ -5,10 +5,8 @@ import de.leonhard.storage.Yaml;
 import de.leonhard.storage.sections.FlatFileSection;
 import io.github.craftizz.mbank.MBank;
 import io.github.craftizz.mbank.bank.*;
-import io.github.craftizz.mbank.gui.BankStatisticsGUI;
 import io.github.craftizz.mbank.managers.BankManager;
-import io.github.craftizz.mbank.utils.MessageUtil;
-import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -20,6 +18,8 @@ public class ConfigurationHandler {
     private final Yaml bankConfig;
     private final Yaml language;
     private final Yaml guiYaml;
+    private final Yaml config;
+    private final Yaml data;
 
     public ConfigurationHandler(final @NotNull MBank plugin) {
 
@@ -39,12 +39,29 @@ public class ConfigurationHandler {
                 .fromPath("gui", plugin.getDataFolder().getAbsolutePath())
                 .addInputStreamFromResource("gui.yml")
                 .createYaml();
+
+        config = LightningBuilder
+                .fromPath("config", plugin.getDataFolder().getAbsolutePath())
+                .addInputStreamFromResource("config.yml")
+                .createYaml();
+
+        data = LightningBuilder
+                .fromPath("data", plugin.getDataFolder().getAbsolutePath() + "/data")
+                .createYaml();
     }
 
     public void setupLanguage() {
         for (Language languageEnum : Language.values()) {
             languageEnum.setMessage(language.getString(languageEnum.getConfigPath()));
         }
+    }
+
+    public void setupConfig() {
+
+        Config.setSaveTime(config.getLong("save-time") * 20);
+        MessageType.INFORMATION.setSound(config.getEnum("info-sound", Sound.class));
+        MessageType.DENY.setSound(config.getEnum("deny-sound", Sound.class));
+
     }
 
     public void loadBanks() {
@@ -97,7 +114,23 @@ public class ConfigurationHandler {
         }
     }
 
+    public Yaml getConfig() {
+        return config;
+    }
+
     public Yaml getGuiYaml() {
         return guiYaml;
+    }
+
+    public Yaml getBankConfig() {
+        return bankConfig;
+    }
+
+    public Yaml getLanguage() {
+        return language;
+    }
+
+    public Yaml getData() {
+        return data;
     }
 }

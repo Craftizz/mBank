@@ -18,6 +18,7 @@ public class CrisisTask extends TimedTask {
 
     private final String bankId;
 
+    private final MBank plugin;
     private final BankManager bankManager;
     private final UserManager userManager;
 
@@ -26,6 +27,7 @@ public class CrisisTask extends TimedTask {
         super(1);
         this.bankManager = plugin.getBankManager();
         this.userManager = plugin.getUserManager();
+        this.plugin = plugin;
         this.bankId = bankId;
     }
 
@@ -42,6 +44,8 @@ public class CrisisTask extends TimedTask {
         final Crisis crisis = bank.getCrisis();
 
         if (!crisis.shouldHappen()) return;
+
+        plugin.getLogger().warning(bankId + " will now begin crisis");
 
         for (final OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
             userManager.getUser(offlinePlayer)

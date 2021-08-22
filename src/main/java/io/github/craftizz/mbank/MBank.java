@@ -2,9 +2,11 @@ package io.github.craftizz.mbank;
 
 import io.github.craftizz.mbank.bank.Bank;
 import io.github.craftizz.mbank.commands.*;
+import io.github.craftizz.mbank.configuration.Config;
 import io.github.craftizz.mbank.configuration.ConfigurationHandler;
 import io.github.craftizz.mbank.configuration.Language;
 import io.github.craftizz.mbank.database.DatabaseHandler;
+import io.github.craftizz.mbank.database.PersistenceHandler;
 import io.github.craftizz.mbank.hooks.CMIHook;
 import io.github.craftizz.mbank.hooks.VaultHook;
 import io.github.craftizz.mbank.listeners.PlayerJoinListener;
@@ -15,6 +17,7 @@ import io.github.craftizz.mbank.utils.MessageUtil;
 import me.mattstudios.mf.base.CommandManager;
 import me.mattstudios.mf.base.CompletionHandler;
 import me.mattstudios.mf.base.MessageHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -25,6 +28,7 @@ public final class MBank extends JavaPlugin {
 
     private DatabaseHandler databaseHandler;
     private ConfigurationHandler configurationHandler;
+    private PersistenceHandler persistenceHandler;
 
     private VaultHook vaultHook;
     private CMIHook cmiHook;
@@ -41,6 +45,7 @@ public final class MBank extends JavaPlugin {
         // Initialize Database and Configuration
         this.databaseHandler = new DatabaseHandler(this);
         this.configurationHandler = new ConfigurationHandler(this);
+        this.persistenceHandler = new PersistenceHandler(this);
 
         // Initialize Hooks
         this.vaultHook = new VaultHook();
@@ -66,7 +71,9 @@ public final class MBank extends JavaPlugin {
         setCommandDefaultMessages();
         commandManager.register(
                 new BankBalanceCommand(this),
+                new BankDefaultCommand(this),
                 new BankDepositCommand(this),
+                new BankInfoCommand(this),
                 new BankJoinCommand(this),
                 new BankLeaveCommand(this),
                 new BankStatisticsCommand(this),
@@ -75,10 +82,12 @@ public final class MBank extends JavaPlugin {
 
         // Setup Configuration
         configurationHandler.setupLanguage();
+        configurationHandler.setupConfig();
         configurationHandler.loadBanks();
+        persistenceHandler.loadPersistent();
 
-        userManager.startSaving();
         taskManager.startTask();
+        startSaving();
 
         new BankExpansion(this).register();
     }
@@ -86,6 +95,14 @@ public final class MBank extends JavaPlugin {
     @Override
     public void onDisable() {
         userManager.saveAllUsers();
+        persistenceHandler.savePersistent();
+    }
+
+    public void startSaving() {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> {
+            userManager.saveAllUsers();
+            persistenceHandler.savePersistent();
+        }, Config.SAVE_TIME, Config.SAVE_TIME);
     }
 
     public void registerTabCompletions() {

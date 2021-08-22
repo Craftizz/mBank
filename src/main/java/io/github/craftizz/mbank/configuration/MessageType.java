@@ -7,7 +7,7 @@ public enum MessageType {
     DENY(Sound.BLOCK_BEACON_DEACTIVATE),
     INFORMATION(Sound.BLOCK_NOTE_BLOCK_BELL);
 
-    final Sound sound;
+    private Sound sound;
 
     MessageType(Sound sound) {
         this.sound = sound;
@@ -17,4 +17,7 @@ public enum MessageType {
         return sound;
     }
 
+    public void setSound(Sound sound) {
+        this.sound = sound;
+    }
 }

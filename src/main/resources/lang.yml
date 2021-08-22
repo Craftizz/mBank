@@ -43,5 +43,34 @@ not-in-bank: "<color:#f34723>You are not in <bank> bank!" # <bank>
 already-joined-bank: "<color:#f34723>You already joined <bank> bank!!" # <bank>
 nonexistent-bank: "<color:#f34723>That <bank> bank do not exist!" # <bank>
 
-# GUI
-gui-title: "<bank> Statistics" # <bank>
+# info and help message
+bank-info:
+  - " "
+  - " <color:#adff2f> <bank> Information"
+  - " "
+  - " <color:#1e90ff>General Information"
+  - " <color:#a2aab3>● Minimum Balance: <minimumbalance>%"
+  - " <color:#a2aab3>● Maximum Balance: <maximumbalance>%"
+  - " <color:#a2aab3>● Deposit Fee: <deposit>%"
+  - " <color:#a2aab3>● Withdraw Fee: <withdraw>%"
+  - " <color:#a2aab3>● Withdraw Delay: <delay>"
+  - " "
+  - " <color:#1e90ff>Interest Information"
+  - " <color:#a2aab3>● <interest>% in <interestleft>"
+  - " "
+  - " <color:#1e90ff>Crisis Information"
+  - " <color:#a2aab3>● <crisischance> chance of crisis happening "
+  - " <color:#a2aab3>  in <crisisleft>. You may lose <minimum>%-<max>% of"
+  - " <color:#a2aab3>  your total balance."
+  - " "
+
+help:
+  - " "
+  - " <color:#1e90ff>Command Information"
+  - " <color:#a2aab3>● /bank join <bank> - join a bank"
+  - " <color:#a2aab3>● /bank leave <bank> - leave a bank"
+  - " <color:#a2aab3>● /bank deposit <bank> <amount> - deposit money to a bank"
+  - " <color:#a2aab3>● /bank withdraw <bank> <amount> - withdraw money from a bank"
+  - " <color:#a2aab3>● /bank info <bank> - gives information about the bank"
+  - " <color:#a2aab3>● /bank current <bank> - gives your information on the bank"
+  - " "

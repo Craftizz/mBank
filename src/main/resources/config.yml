@@ -1,0 +1,8 @@
+
+
+# Sounds that will be played on messages
+deny-sound: BLOCK_BEACON_DEACTIVATE
+info-sound: BLOCK_NOTE_BLOCK_BELL
+
+# How often should we save the user files? (In Seconds)
+save-time: 300

@@ -2,6 +2,7 @@ package io.github.craftizz.mbank.managers;
 
 import io.github.craftizz.mbank.MBank;
 import io.github.craftizz.mbank.bank.user.User;
+import io.github.craftizz.mbank.configuration.Config;
 import io.github.craftizz.mbank.database.DatabaseHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -116,13 +117,6 @@ public class UserManager {
         databaseHandler.unloadUnusedUserFile();
 
         plugin.getLogger().warning("Finished Saving Users Bank Data in " + (System.currentTimeMillis() - startTime) + "ms");
-    }
-
-    /**
-     * Starts saving all users. Used on {@link MBank#onEnable()}
-     */
-    public void startSaving() {
-        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, this::saveAllUsers, 600, 600);
     }
 
 }
