@@ -3,7 +3,6 @@ package io.github.craftizz.mbank;
 import io.github.craftizz.mbank.bank.*;
 import io.github.craftizz.mbank.bank.user.User;
 import io.github.craftizz.mbank.bank.user.UserBankData;
-import io.github.craftizz.mbank.hooks.VaultHook;
 import io.github.craftizz.mbank.managers.BankManager;
 import io.github.craftizz.mbank.managers.UserManager;
 import io.github.craftizz.mbank.utils.NumberUtils;
@@ -13,10 +12,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 public class BankExpansion extends PlaceholderExpansion {

@@ -37,8 +37,8 @@ public class BankDepositCommand extends CommandBase {
 
     @SubCommand("deposit")
     public void onBankDepositCommand(final @NotNull Player player,
-                                      final @NotNull @Completion("#banks") String bankName,
-                                      final @NotNull @Completion("#amount") Double amount) {
+                                     final @Completion("#banks") String bankName,
+                                     final @Completion("#amount") Double amount) {
 
         final Bank bank = bankManager.getBank(bankName);
         final User user = userManager.getUser(player);
@@ -60,6 +60,14 @@ public class BankDepositCommand extends CommandBase {
                     Language.NOT_IN_BANK,
                     MessageType.DENY,
                     "bank", bankName);
+            return;
+        }
+
+        // Check if amount is null
+        if (amount == null) {
+            MessageUtil.sendMessage(player,
+                    Language.ONLY_INTEGERS,
+                    MessageType.DENY);
             return;
         }
 

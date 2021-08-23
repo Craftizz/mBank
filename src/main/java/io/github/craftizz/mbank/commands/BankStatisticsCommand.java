@@ -7,7 +7,6 @@ import io.github.craftizz.mbank.bank.user.UserBankData;
 import io.github.craftizz.mbank.configuration.ConfigurationHandler;
 import io.github.craftizz.mbank.configuration.Language;
 import io.github.craftizz.mbank.configuration.MessageType;
-import io.github.craftizz.mbank.gui.BankStatisticsGUI;
 import io.github.craftizz.mbank.managers.BankManager;
 import io.github.craftizz.mbank.managers.UserManager;
 import io.github.craftizz.mbank.utils.MessageUtil;
@@ -62,12 +61,7 @@ public class BankStatisticsCommand extends CommandBase {
             return;
         }
 
-        final BankStatisticsGUI statisticsGUI = new BankStatisticsGUI(
-                optionalUserBankData.get(),
-                bankManager.getBank(bankName),
-                configurationHandler.getGuiYaml());
-
-        statisticsGUI.open(player);
+        plugin.getGuiManager().openBankStatisticsGUI(player, optionalUserBankData.get(), bank, configurationHandler.getGuiYaml());
     }
 
 }

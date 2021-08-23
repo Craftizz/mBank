@@ -40,7 +40,7 @@ public class Crisis {
         }
 
         calculateNextCrisis();
-        return !(Math.random() >= chanceToHappen);
+        return Math.random() <= chanceToLose;
     }
 
     /**
@@ -51,7 +51,7 @@ public class Crisis {
      * @return the money to be withdrawn
      */
     public Double calculateLost(final @NotNull Double balance) {
-        if (Math.random() <= chanceToLose) {
+        if (Math.random() > chanceToLose) {
             return 0d;
         }
         return balance * (random.nextDouble(minimumLostInPercentage, maximumLostInPercentage));

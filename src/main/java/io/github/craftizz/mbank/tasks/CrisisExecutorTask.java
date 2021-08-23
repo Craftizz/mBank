@@ -1,5 +1,6 @@
 package io.github.craftizz.mbank.tasks;
 
+import com.google.common.collect.Queues;
 import io.github.craftizz.mbank.MBank;
 import io.github.craftizz.mbank.bank.Bank;
 import io.github.craftizz.mbank.bank.Crisis;
@@ -7,74 +8,97 @@ import io.github.craftizz.mbank.configuration.Language;
 import io.github.craftizz.mbank.configuration.MessageType;
 import io.github.craftizz.mbank.managers.BankManager;
 import io.github.craftizz.mbank.managers.UserManager;
-import io.github.craftizz.mbank.tasks.tasktypes.TimedTask;
+import io.github.craftizz.mbank.tasks.tasktypes.BooleanTask;
 import io.github.craftizz.mbank.utils.MessageUtil;
 import io.github.craftizz.mbank.utils.NumberUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class CrisisTask extends TimedTask {
+import java.util.ArrayDeque;
+import java.util.UUID;
 
-    private final String bankId;
+public class CrisisExecutorTask extends BooleanTask {
 
-    private final MBank plugin;
+    private final ArrayDeque<UUID> offlinePlayers;
+
     private final BankManager bankManager;
     private final UserManager userManager;
+    private final String bankId;
 
-    public CrisisTask(final @NotNull MBank plugin,
-                      final @NotNull String bankId) {
-        super(1);
+    public CrisisExecutorTask(final @NotNull MBank plugin,
+                              final @NotNull String bankId) {
+        this.offlinePlayers = Queues.newArrayDeque();
         this.bankManager = plugin.getBankManager();
         this.userManager = plugin.getUserManager();
-        this.plugin = plugin;
         this.bankId = bankId;
+
+        for (final OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
+            offlinePlayers.add(offlinePlayer.getUniqueId());
+        }
     }
 
-    /**
-     * This checks if the bank should have the crisis happen,
-     * if true, it will execute the crisis which respects
-     * all the values in {@link Crisis}
-     *
-     */
     @Override
     public void compute() {
 
+        // Get stop time
+        final long stopTime = System.currentTimeMillis() + 5;
+
+        // Get necessary data
         final Bank bank = bankManager.getBank(bankId);
         final Crisis crisis = bank.getCrisis();
 
-        if (!crisis.shouldHappen()) return;
+        // Loop
+        while (!offlinePlayers.isEmpty() && System.currentTimeMillis() <= stopTime) {
 
-        plugin.getLogger().warning(bankId + " will now begin crisis");
+            final UUID uniqueId = offlinePlayers.poll();
 
-        for (final OfflinePlayer offlinePlayer : Bukkit.getOfflinePlayers()) {
-            userManager.getUser(offlinePlayer)
-                    .getUserBankData(bank.getId())
+            if (uniqueId == null) {
+                continue;
+            }
+
+            // Get User
+            userManager.getUser(uniqueId)
+                    .getUserBankData(bankId)
                     .ifPresent(bankData -> {
 
+                        // Calculate Lost
                         double totalLost = crisis.calculateLost(bankData.getBalance());
+
+                        // Set data
                         bankData.setLostInLastCrisis(totalLost);
+                        bankData.addToTotalLostInCrisis(totalLost);
                         bankData.withdraw(totalLost);
 
-                        if (offlinePlayer.isOnline()) {
+                        // Send message if online
+                        final Player player = Bukkit.getPlayer(uniqueId);
+
+                        if (player != null) {
 
                             if (totalLost == 0d) {
-                                MessageUtil.sendMessage(offlinePlayer.getPlayer(),
+                                MessageUtil.sendMessage(player,
                                         Language.BANK_CRISIS_NOT_AFFECTED,
                                         MessageType.INFORMATION,
                                         "bank", bank.getId());
                             }
 
                             else {
-                                MessageUtil.sendMessage(offlinePlayer.getPlayer(),
-                                        Language.BANK_CRISIS_NOT_AFFECTED,
+                                MessageUtil.sendMessage(player,
+                                        Language.BANK_CRISIS_LOST,
                                         MessageType.INFORMATION,
                                         "bank", bank.getId(),
                                         "amount", NumberUtils.formatCurrency(totalLost));
                             }
                         }
-                    });
-        }
-    }
 
+            });
+        }
+
+        // Cancel task if done
+        if (offlinePlayers.isEmpty()) {
+            setShouldReschedule(false);
+        }
+
+    }
 }

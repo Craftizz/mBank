@@ -77,6 +77,7 @@ public class InterestTask extends TimedTask {
                             }
 
                             bankData.deposit(interestEarning);
+                            bankData.addToTotalInterest(interestEarning);
 
                             if (interestEarning == 0d) {
                                 MessageUtil.sendMessage(player,

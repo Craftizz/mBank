@@ -33,6 +33,7 @@ public enum Language {
     NOT_ENOUGH_MONEY("not-enough-money"),
     NOT_ENOUGH_MONEY_IN_BANK("not-enough-money-in-bank"),
     NOT_IN_BANK("not-in-bank"),
+    ONLY_INTEGERS("only-integers"),
     WITHDRAW_DENY_TIME("withdraw-deny-time");
 
     private final String configPath;

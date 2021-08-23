@@ -39,8 +39,8 @@ public class BankWithdrawCommand extends CommandBase {
 
     @SubCommand("withdraw")
     public void onBankWithdrawCommand(final @NotNull Player player,
-                                      final @NotNull @Completion("#banks") String bankName,
-                                      final @NotNull @Completion("#amount") Double amount) {
+                                      final @Completion("#banks") String bankName,
+                                      final @Completion("#amount") Double amount) {
 
         final Bank bank = bankManager.getBank(bankName);
         final User user = userManager.getUser(player);
@@ -65,6 +65,14 @@ public class BankWithdrawCommand extends CommandBase {
             return;
         }
 
+        // Check if amount is null
+        if (amount == null) {
+            MessageUtil.sendMessage(player,
+                    Language.ONLY_INTEGERS,
+                    MessageType.DENY);
+            return;
+        }
+
         // Check if amount is negative
         if (amount <= 0) {
             MessageUtil.sendMessage(player,
@@ -81,9 +89,7 @@ public class BankWithdrawCommand extends CommandBase {
         // Check last withdrawn
         final long timeLeft = LocalDateTime.now().until(userBankData
                 .getLastWithdraw()
-                .plusSeconds(bank
-                        .getRestrictions()
-                        .getWithdrawInterval()), ChronoUnit.SECONDS);
+                .plusSeconds(bank.getRestrictions().getWithdrawInterval()), ChronoUnit.SECONDS);
 
         if (timeLeft > 0) {
             MessageUtil.sendMessage(player,

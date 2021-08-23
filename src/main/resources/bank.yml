@@ -5,7 +5,7 @@ b01wBank:
   # The ID must be unique and consistent. Once used, you should not change it anymore.
   id: b01wbank
   # This will be used as a display name of the bank. You can change this anytime you want
-  display-name: "<color:#adff2f>Bank of b01w"
+  display-name: "The B01w"
 
   restrictions:
     # The minimum balance of the player to open an account on this bank
@@ -22,7 +22,7 @@ b01wBank:
     # In percentage. Decimals are allowed
     value: 0.1 # 0.10%
     # How often should we give interest? (Use seconds)
-    interval: 120
+    interval: 3600
 
   # Commands should be input without '/'. Use <player> as a placeholder
   commands:
@@ -49,7 +49,7 @@ b01wBank:
     # The maximum lost in percentage that a player can lose
     maximum-lost: 0.50
     # How often should should the crisis happen? (In seconds)
-    interval: 60
+    interval: 259200
 
 #####################################################################################################
 #                                                                                                   #
@@ -62,7 +62,7 @@ craftbank:
   # The ID must be unique and consistent. Once used, you should not change it anymore.
   id: craftbank
   # This will be used as a display name of the bank. You can change this anytime you want
-  display-name: "<color:#adff2f>Bank of Craftizz"
+  display-name: "Bank of Craftizz"
 
   restrictions:
     # The minimum balance of the player to open an account on this bank
@@ -79,7 +79,7 @@ craftbank:
     # In percentage. Decimals are allowed
     value: 0.1 # 0.10%
     # How often should we give interest? (Use seconds)
-    interval: 600
+    interval: 7200
 
   # Commands should be input without '/'. Use <player> as a placeholder
   commands:
@@ -106,4 +106,4 @@ craftbank:
     # The maximum lost in percentage that a player can lose
     maximum-lost: 0.50
     # How often should should the crisis happen? (In seconds)
-    interval: 1800
+    interval: 172800

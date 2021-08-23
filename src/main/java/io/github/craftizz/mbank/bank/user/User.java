@@ -28,9 +28,12 @@ public class User {
      * @return an optional userBankData
      */
     public Optional<UserBankData> getUserBankData(final @NotNull String bankId) {
-        return bankData.stream()
-                .filter(bankData -> bankData.getBankId().equals(bankId))
-                .findFirst();
+        for (final UserBankData bankData : bankData) {
+            if (bankData.getBankId().equals(bankId)) {
+                return Optional.of(bankData);
+            }
+        }
+        return Optional.empty();
     }
 
     /**
@@ -40,7 +43,7 @@ public class User {
      * @return the new bankData
      */
     public UserBankData createBankData(final @NotNull String bankId) {
-        final UserBankData userBankData = new UserBankData(bankId, 0d, 0d, LocalDateTime.now());
+        final UserBankData userBankData = new UserBankData(bankId, 0d, 0d, 0d, 0d, LocalDateTime.now());
         bankData.add(userBankData);
         return userBankData;
     }

@@ -13,13 +13,15 @@ import io.github.craftizz.mbank.managers.BankManager;
 import io.github.craftizz.mbank.managers.UserManager;
 import io.github.craftizz.mbank.utils.MessageUtil;
 import io.github.craftizz.mbank.utils.NumberUtils;
-import me.mattstudios.mf.annotations.*;
+import me.mattstudios.mf.annotations.Alias;
+import me.mattstudios.mf.annotations.Command;
+import me.mattstudios.mf.annotations.Completion;
+import me.mattstudios.mf.annotations.SubCommand;
 import me.mattstudios.mf.base.CommandBase;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 

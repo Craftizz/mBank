@@ -1,7 +1,6 @@
 package io.github.craftizz.mbank.commands;
 
 import io.github.craftizz.mbank.MBank;
-import io.github.craftizz.mbank.bank.Bank;
 import io.github.craftizz.mbank.bank.user.User;
 import io.github.craftizz.mbank.bank.user.UserBankData;
 import io.github.craftizz.mbank.configuration.Language;

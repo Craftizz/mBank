@@ -7,18 +7,24 @@ import java.time.LocalDateTime;
 public class UserBankData {
 
     private final String bankId;
-
     private LocalDateTime lastWithdraw;
+
     private Double balance;
     private Double lostInLastCrisis;
+    private Double totalInterestEarning;
+    private Double totalLostInCrisis;
 
     public UserBankData(final @NotNull String bankId,
                         final @NotNull Double balance,
                         final @NotNull Double lostInLastCrisis,
+                        final @NotNull Double totalInterestEarning,
+                        final @NotNull Double totalLostInCrisis,
                         final @NotNull LocalDateTime lastWithdraw) {
         this.bankId = bankId;
         this.balance = balance;
         this.lostInLastCrisis = lostInLastCrisis;
+        this.totalInterestEarning = totalInterestEarning;
+        this.totalLostInCrisis = totalLostInCrisis;
         this.lastWithdraw = lastWithdraw;
     }
 
@@ -30,6 +36,8 @@ public class UserBankData {
     }
 
     /**
+     * Adds amount to the balance
+     *
      * @param amount to be deposited
      */
     public void deposit(final @NotNull Double amount) {
@@ -37,10 +45,30 @@ public class UserBankData {
     }
 
     /**
+     * Removes amount from the balance
+     *
      * @param amount to be withdrawn
      */
     public void withdraw(final @NotNull Double amount) {
         this.balance -= amount;
+    }
+
+    /**
+     * Adds amount to the total interest gain
+     *
+     * @param amount the amount to be added
+     */
+    public void addToTotalInterest(final @NotNull Double amount) {
+        this.totalInterestEarning += amount;
+    }
+
+    /**
+     * Adds amount to the total lost in crisis
+     *
+     * @param amount the amount to be added
+     */
+    public void addToTotalLostInCrisis(final @NotNull Double amount) {
+        this.totalLostInCrisis += amount;
     }
 
     /**
@@ -74,5 +102,13 @@ public class UserBankData {
      */
     public Double getLostInLastCrisis() {
         return lostInLastCrisis;
+    }
+
+    public Double getTotalInterestEarning() {
+        return totalInterestEarning;
+    }
+
+    public Double getTotalLostInCrisis() {
+        return totalLostInCrisis;
     }
 }

@@ -1,9 +1,10 @@
 package io.github.craftizz.mbank.managers;
 
 import io.github.craftizz.mbank.MBank;
-import io.github.craftizz.mbank.tasks.CrisisTask;
+import io.github.craftizz.mbank.tasks.CrisisTimerTask;
 import io.github.craftizz.mbank.tasks.InterestTask;
 import io.github.craftizz.mbank.tasks.TaskRunnable;
+import io.github.craftizz.mbank.tasks.tasktypes.Task;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,10 +25,14 @@ public class TaskManager {
     public void startTask() {
         plugin.getBankManager().getBanks().forEach(bank -> {
             taskRunnable.addLoad(new InterestTask(plugin, bank.getId()));
-            taskRunnable.addLoad(new CrisisTask(plugin, bank.getId()));
+            taskRunnable.addLoad(new CrisisTimerTask(plugin, bank.getId()));
         });
 
         Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, taskRunnable, 20, 20);
+    }
+
+    public void addTask(final @NotNull Task task) {
+        taskRunnable.addLoad(task);
     }
 
     /**

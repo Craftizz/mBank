@@ -13,8 +13,8 @@ statistics:
   # Placeholders for balance:
   # <amount> - the player's balance
   # <maxamount> - the maximum balance of the bank
-  # <deposit> - the deposit fee of the bank in percentage
-  # <withdraw> - the withdraw fee of the bank in percentage
+  # <interest> - the deposit fee of the bank in percentage
+  # <crisis> - the withdraw fee of the bank in percentage
   balance:
     title: "<color:#adff2f>Balance Information"
     material: GOLD_BLOCK
@@ -25,9 +25,9 @@ statistics:
       - "<color:#0bda51>Balance: $<amount>/$<maxamount>"
       - "<color:#a2aab3>You can withdraw in <time>"
       - " "
-      - "<color:#1e90ff>General Information:"
-      - "<color:#a2aab3>● Deposit Fee: <deposit>%"
-      - "<color:#a2aab3>● Withdraw Fee: <withdraw>%"
+      - "<color:#1e90ff>Statistics:"
+      - "<color:#a2aab3>● Total interest earnings: $<interest>"
+      - "<color:#a2aab3>● Total lost in crisis: $<crisis>"
       - " "
 
   # Placeholders for interest:
@@ -42,16 +42,16 @@ statistics:
   interest:
     title: "<color:#adff2f>Interest Information"
     material: EMERALD
-    slot: 20
+    slot: 21
     lore:
       - "<color:#3c4151>Bank Statistics"
       - " "
-      - "<color:#0bda51>$<earning1> in <time1>"
+      - "<color:#0bda51>$<earning1> interest in <time1>"
       - " "
-      - "<color:#1e90ff>Projected Balance:"
-      - "<color:#a2aab3>● After <time2>: $<earning2>   "
-      - "<color:#a2aab3>● After <time3>: $<earning3>   "
-      - "<color:#a2aab3>● After <time4>: $<earning4>   "
+      - "<color:#1e90ff> Projected Balance "
+      - "<color:#a2aab3> ● In <time2> | $<earning2>   "
+      - "<color:#a2aab3> ● In <time3> | $<earning3>   "
+      - "<color:#a2aab3> ● In <time4> | $<earning4>   "
       - " "
 
   # Placeholders for crisis
@@ -63,17 +63,14 @@ statistics:
   crisis:
     title: "<color:#adff2f>Crisis Information"
     material: REDSTONE
-    slot: 24
+    slot: 23
     lore:
       - "<color:#3c4151>Bank Statistics"
       - " "
-      - "<color:#a2aab3>You may lose $<minimum> up "
-      - "<color:#a2aab3>to $<maximum> in the next"
-      - "<color:#a2aab3>crisis happening in <time>"
+      - " <color:#f34723>⚠ <chancehappen>% chance of crisis in <time>   "
+      - " <color:#a2aab3>You lost $<amount> in the last crisis"
       - " "
-      - "<color:#f34723>You lost $<amount> in the last crisis"
-      - " "
-      - "<color:#1e90ff>General Information:"
-      - "<color:#a2aab3>● Chance to happen: <chancehappen>%"
-      - "<color:#a2aab3>● Chance to be affected: <chanceaffected>%"
+      - " <color:#1e90ff>Projections:"
+      - " <color:#a2aab3>☑ You have <chanceaffected>% chance to be affected  "
+      - " <color:#a2aab3>☑ You may lose $<minimum> up to $<maximum>   "
       - " "

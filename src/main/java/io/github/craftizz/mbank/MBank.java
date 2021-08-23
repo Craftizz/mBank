@@ -11,6 +11,7 @@ import io.github.craftizz.mbank.hooks.CMIHook;
 import io.github.craftizz.mbank.hooks.VaultHook;
 import io.github.craftizz.mbank.listeners.PlayerJoinListener;
 import io.github.craftizz.mbank.managers.BankManager;
+import io.github.craftizz.mbank.managers.GUIManager;
 import io.github.craftizz.mbank.managers.TaskManager;
 import io.github.craftizz.mbank.managers.UserManager;
 import io.github.craftizz.mbank.utils.MessageUtil;
@@ -36,6 +37,7 @@ public final class MBank extends JavaPlugin {
     private UserManager userManager;
     private BankManager bankManager;
     private TaskManager taskManager;
+    private GUIManager guiManager;
     private CommandManager commandManager;
 
     @Override
@@ -60,6 +62,7 @@ public final class MBank extends JavaPlugin {
         this.userManager = new UserManager(this);
         this.bankManager = new BankManager(this);
         this.taskManager = new TaskManager(this);
+        this.guiManager = new GUIManager(this);
         this.commandManager = new CommandManager(this);
 
         // Initialize Listeners
@@ -142,5 +145,13 @@ public final class MBank extends JavaPlugin {
 
     public ConfigurationHandler getConfigurationHandler() {
         return configurationHandler;
+    }
+
+    public TaskManager getTaskManager() {
+        return taskManager;
+    }
+
+    public GUIManager getGuiManager() {
+        return guiManager;
     }
 }

@@ -2,7 +2,6 @@ package io.github.craftizz.mbank.managers;
 
 import io.github.craftizz.mbank.MBank;
 import io.github.craftizz.mbank.bank.user.User;
-import io.github.craftizz.mbank.configuration.Config;
 import io.github.craftizz.mbank.database.DatabaseHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;

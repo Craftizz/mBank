@@ -44,9 +44,11 @@ public class DatabaseHandler {
 
             final Double balance = section.getDouble(bankId + ".balance");
             final Double lostInLastCrisis = section.getDouble(bankId + ".lost-in-crisis");
+            final Double totalInterestEarning = section.getDouble(bankId + ".total-interest-earning");
+            final Double totalLostInCrisis = section.getDouble(bankId + ".total-lost-in-crisis");
             final String lastWithdraw = section.getString(bankId + ".last-withdraw");
 
-            user.addBankData(new UserBankData(bankId, balance, lostInLastCrisis, LocalDateTime.parse(lastWithdraw)));
+            user.addBankData(new UserBankData(bankId, balance, lostInLastCrisis, totalInterestEarning, totalLostInCrisis, LocalDateTime.parse(lastWithdraw)));
         }
 
         return user;
@@ -81,6 +83,8 @@ public class DatabaseHandler {
 
             userFile.set(uniqueId + "." + bankData.getBankId() + ".balance", bankData.getBalance());
             userFile.set(uniqueId + "." + bankData.getBankId() + ".lost-in-crisis", bankData.getLostInLastCrisis());
+            userFile.set(uniqueId + "." + bankData.getBankId() + ".total-interest-earning", bankData.getTotalInterestEarning());
+            userFile.set(uniqueId + "." + bankData.getBankId() + ".total-lost-in-crisis", bankData.getTotalLostInCrisis());
             userFile.set(uniqueId + "." + bankData.getBankId() + ".last-withdraw", bankData.getLastWithdraw().toString());
 
         }

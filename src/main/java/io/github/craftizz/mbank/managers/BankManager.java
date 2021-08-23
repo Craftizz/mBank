@@ -2,13 +2,13 @@ package io.github.craftizz.mbank.managers;
 
 import io.github.craftizz.mbank.MBank;
 import io.github.craftizz.mbank.bank.Bank;
-import io.github.craftizz.mbank.bank.user.User;
 import io.github.craftizz.mbank.bank.user.UserBankData;
 import io.github.craftizz.mbank.database.DatabaseHandler;
 import io.github.craftizz.mbank.hooks.VaultHook;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Optional;
@@ -81,6 +81,7 @@ public class BankManager {
             final double amountWithFee = amount - bank.getFees().calculateWithdrawFee(amount);
             VaultHook.getEconomy().depositPlayer(offlinePlayer, amountWithFee);
             userBankData.withdraw(amount);
+            userBankData.setLastWithdraw(LocalDateTime.now());
         });
     }
 
