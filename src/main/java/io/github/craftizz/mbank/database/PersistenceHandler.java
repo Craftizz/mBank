@@ -35,7 +35,7 @@ public class PersistenceHandler {
 
             // Set Crisis Time
             final Crisis crisis = bank.getCrisis();
-            crisis.setTimeLeft(config.getOrSetDefault(bank.getId() + ".crisis-time-left", crisis.getInterval()));
+            crisis.setTimeLeft(config.getOrSetDefault(bank.getId() + ".crisis-time-left", crisis.getNextRandomInterval()));
             logger.warning(bank.getId() + " - crisis time left has been set to " + crisis.getNextCrisis());
 
         }

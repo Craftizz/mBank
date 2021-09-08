@@ -12,6 +12,8 @@ public class TaskRunnable implements Runnable {
     private static final int MAX_MS_PER_SECOND = 5;
     private final ArrayDeque<Task> taskDeque;
 
+    private Task firstTask;
+
     public TaskRunnable() {
         this.taskDeque = Queues.newArrayDeque();
     }
@@ -20,33 +22,37 @@ public class TaskRunnable implements Runnable {
         taskDeque.add(task);
     }
 
-    private void computeTask(final @Nullable Task task) {
+    private boolean computeTask(final @Nullable Task task) {
         if (task != null) {
-            task.compute();
+            if (task.shouldExecute()) {
+                task.compute();
+            }
             if (task.shouldReschedule()) {
                 addLoad(task);
+                if (firstTask == null) {
+                    firstTask = task;
+                } else {
+                    return firstTask != task;
+                }
             }
         }
+        return true;
     }
 
     @Override
     public void run() {
         final long stopTime = System.currentTimeMillis() + MAX_MS_PER_SECOND;
 
-        // Prevent Infinite Loops
-        final Task firstTask = taskDeque.poll();
-        if (firstTask == null) {
-            return;
-        }
-        computeTask(firstTask);
-
         while (!taskDeque.isEmpty() && System.currentTimeMillis() <= stopTime) {
             final Task task = taskDeque.poll();
-            computeTask(task);
-            if (firstTask == task) {
+
+            if (!computeTask(task)) {
                 break;
             }
         }
     }
 
+    public void stopTasks() {
+        taskDeque.clear();
+    }
 }

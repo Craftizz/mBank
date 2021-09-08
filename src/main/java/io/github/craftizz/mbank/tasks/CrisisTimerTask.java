@@ -5,6 +5,7 @@ import io.github.craftizz.mbank.bank.Crisis;
 import io.github.craftizz.mbank.managers.BankManager;
 import io.github.craftizz.mbank.managers.TaskManager;
 import io.github.craftizz.mbank.tasks.tasktypes.TimedTask;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
 public class CrisisTimerTask extends TimedTask {
@@ -17,7 +18,7 @@ public class CrisisTimerTask extends TimedTask {
 
     public CrisisTimerTask(final @NotNull MBank plugin,
                            final @NotNull String bankId) {
-        super(1);
+        super(20);
         this.bankManager = plugin.getBankManager();
         this.taskManager = plugin.getTaskManager();
         this.plugin = plugin;
@@ -31,7 +32,9 @@ public class CrisisTimerTask extends TimedTask {
     @Override
     public void compute() {
 
-        final Crisis crisis = bankManager.getBank(bankId).getCrisis();
+        final Crisis crisis = bankManager
+                .getBank(bankId)
+                .getCrisis();
 
         if (!crisis.shouldHappen()) {
             return;

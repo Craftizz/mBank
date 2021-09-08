@@ -13,4 +13,9 @@ public abstract class TimedTask extends ConditionalScheduledTask<Integer> {
     public boolean test(Integer secondsPerExecution) {
         return secondsChecked++ % secondsPerExecution == 0;
     }
+
+    @Override
+    public boolean shouldReschedule() {
+        return true;
+    }
 }

@@ -80,7 +80,8 @@ public final class MBank extends JavaPlugin {
                 new BankJoinCommand(this),
                 new BankLeaveCommand(this),
                 new BankStatisticsCommand(this),
-                new BankWithdrawCommand(this)
+                new BankWithdrawCommand(this),
+                new BankReloadCommand(this)
         );
 
         // Setup Configuration
@@ -93,6 +94,19 @@ public final class MBank extends JavaPlugin {
         startSaving();
 
         new BankExpansion(this).register();
+    }
+
+    public void reload() {
+
+        persistenceHandler.savePersistent();
+        bankManager.clearBankMap();
+        taskManager.stopBankTask();
+
+        configurationHandler.setupLanguage();
+        configurationHandler.setupConfig();
+        configurationHandler.loadBanks();
+        persistenceHandler.loadPersistent();
+        taskManager.startTask();
     }
 
     @Override

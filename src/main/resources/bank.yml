@@ -49,7 +49,8 @@ b01wBank:
     # The maximum lost in percentage that a player can lose
     maximum-lost: 0.50
     # How often should should the crisis happen? (In seconds)
-    interval: 259200
+    minimum-interval: 259200
+    maximum-interval: 345600
 
 #####################################################################################################
 #                                                                                                   #
@@ -106,4 +107,5 @@ craftbank:
     # The maximum lost in percentage that a player can lose
     maximum-lost: 0.50
     # How often should should the crisis happen? (In seconds)
-    interval: 172800
+    minimum-interval: 259200
+    maximum-interval: 345600

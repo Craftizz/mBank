@@ -99,6 +99,5 @@ public class CrisisExecutorTask extends BooleanTask {
         if (offlinePlayers.isEmpty()) {
             setShouldReschedule(false);
         }
-
     }
 }

@@ -27,7 +27,7 @@ public class InterestTask extends TimedTask {
 
     public InterestTask(final @NotNull MBank plugin,
                         final @NotNull String bankId) {
-        super(1);
+        super(20);
         this.bankManager = plugin.getBankManager();
         this.userManager = plugin.getUserManager();
         this.plugin = plugin;

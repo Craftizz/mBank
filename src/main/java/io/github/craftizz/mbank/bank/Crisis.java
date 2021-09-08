@@ -1,5 +1,6 @@
 package io.github.craftizz.mbank.bank;
 
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
@@ -13,7 +14,8 @@ public class Crisis {
     private final Double chanceToLose;
     private final Double minimumLostInPercentage;
     private final Double maximumLostInPercentage;
-    private final Integer interval;
+    private final Integer minimumInterval;
+    private final Integer maximumInterval;
 
     private Integer timeLeft;
 
@@ -21,14 +23,16 @@ public class Crisis {
                   final @NotNull Double chanceToLose,
                   final @NotNull Double minimumLostInPercentage,
                   final @NotNull Double maximumLostInPercentage,
-                  final @NotNull Integer interval) {
+                  final @NotNull Integer minimumInterval,
+                  final @NotNull Integer maximumInterval) {
 
         this.chanceToHappen = chanceToHappen;
         this.chanceToLose = chanceToLose;
         this.minimumLostInPercentage = minimumLostInPercentage;
         this.maximumLostInPercentage = maximumLostInPercentage;
-        this.interval = interval;
-        this.timeLeft = interval;
+        this.minimumInterval = minimumInterval;
+        this.maximumInterval = maximumInterval;
+        this.timeLeft = getNextRandomInterval();
     }
 
     /**
@@ -38,9 +42,12 @@ public class Crisis {
         if (timeLeft-- > 0) {
             return false;
         }
-
         calculateNextCrisis();
-        return Math.random() <= chanceToLose;
+        return Math.random() <= chanceToHappen;
+    }
+
+    public Integer getNextRandomInterval() {
+        return random.nextInt(minimumInterval, maximumInterval);
     }
 
     /**
@@ -61,7 +68,7 @@ public class Crisis {
      * Calculates the next crisis
      */
     public void calculateNextCrisis() {
-        this.timeLeft += interval;
+        this.timeLeft = getNextRandomInterval();
     }
 
     /**
@@ -101,11 +108,12 @@ public class Crisis {
         return maximumLostInPercentage;
     }
 
-    /**
-     * @return how often the crisis will happen
-     */
-    public Integer getInterval() {
-        return interval;
+    public Integer getMinimumInterval() {
+        return minimumInterval;
+    }
+
+    public Integer getMaximumInterval() {
+        return maximumInterval;
     }
 
     /**

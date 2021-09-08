@@ -83,7 +83,6 @@ public class BankWithdrawCommand extends CommandBase {
         }
 
         final UserBankData userBankData = bankDataOptional.get();
-        final Restrictions restrictions = bank.getRestrictions();
         final double bankBalance = userBankData.getBalance();
 
         // Check last withdrawn

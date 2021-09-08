@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 public class VaultHook {
 
     private static Economy economy;
-    private   static Permission permission;
+    private static Permission permission;
 
     /**
      * Setups the {@link Economy}

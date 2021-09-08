@@ -141,6 +141,10 @@ public class BankManager {
         return banks.get(bankId);
     }
 
+    public void clearBankMap() {
+        banks.clear();
+    }
+
     /**
      * @return the map of banks
      */

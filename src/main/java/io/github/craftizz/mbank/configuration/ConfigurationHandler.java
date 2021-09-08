@@ -2,7 +2,9 @@ package io.github.craftizz.mbank.configuration;
 
 import de.leonhard.storage.LightningBuilder;
 import de.leonhard.storage.Yaml;
+import de.leonhard.storage.internal.provider.LightningProviders;
 import de.leonhard.storage.sections.FlatFileSection;
+import de.leonhard.storage.shaded.esotericsoftware.yamlbeans.YamlConfig;
 import io.github.craftizz.mbank.MBank;
 import io.github.craftizz.mbank.bank.*;
 import io.github.craftizz.mbank.managers.BankManager;
@@ -99,14 +101,15 @@ public class ConfigurationHandler {
             final Double chanceToLose = section.getDouble("crisis" + ".chance-to-lose");
             final Double minimumLostInPercentage = section.getDouble("crisis" + ".minimum-lost");
             final Double maximumLostInPercentage = section.getDouble("crisis" + ".maximum-lost");
-            final Integer crisisInterval = section.getInt("crisis" + ".interval");
+            final Integer minimumInterval = section.getInt("crisis" + ".minimum-interval");
+            final Integer maximumInterval = section.getInt("crisis" + ".maximum-interval");
 
             final Bank bank = new Bank(bankId, bankName,
                     new Restrictions(minimumBalance, maximumBalance, withdrawInterval, permissions),
                     new Interest(interest, interestInterval),
                     new Commands(joinCommands, leaveCommands),
                     new Fees(depositFee, withdrawFee),
-                    new Crisis(chanceToHappen, chanceToLose, minimumLostInPercentage, maximumLostInPercentage, crisisInterval));
+                    new Crisis(chanceToHappen, chanceToLose, minimumLostInPercentage, maximumLostInPercentage, minimumInterval, maximumInterval));
 
             bankManager.addBank(bank);
 

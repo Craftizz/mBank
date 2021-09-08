@@ -35,10 +35,6 @@ public class NumberUtils {
                     .append("s");
         }
 
-        if (seconds == 0) {
-            builder.append("0s");
-        }
-
         return builder.toString();
     }
 

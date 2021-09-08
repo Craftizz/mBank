@@ -8,4 +8,8 @@ public interface Task {
         return false;
     }
 
+    default boolean shouldExecute() {
+        return true;
+    }
+
 }

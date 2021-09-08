@@ -343,11 +343,18 @@ public class BankExpansion extends PlaceholderExpansion {
 
                     case "interval":
 
-                        if (arguments.length == 3) {
-                            return String.valueOf(crisis.getInterval());
-                        }
-                        else if (arguments[3].equals("formatted")) {
-                            return NumberUtils.convertSeconds(crisis.getInterval());
+                        if (arguments[3].equals("minimum")) {
+                            if (arguments.length == 4) {
+                                return String.valueOf(crisis.getMinimumInterval());
+                            } else if (arguments[4].equals("formatted")) {
+                                return NumberUtils.convertSeconds(crisis.getMinimumInterval());
+                            }
+                        } else if (arguments[3].equals("maximum")) {
+                            if (arguments.length == 4) {
+                                return String.valueOf(crisis.getMaximumInterval());
+                            } else if (arguments[4].equals("formatted")) {
+                                return NumberUtils.convertSeconds(crisis.getMaximumInterval());
+                            }
                         }
 
                     case "timeleft":
